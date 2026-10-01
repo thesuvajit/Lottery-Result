@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0d14" />
+    <meta name="color-scheme" content="dark light" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Lottery Result — 1 PM | 6 PM | 8 PM Daily Draws</title>
+    <meta name="description" content="Check official daily lottery draw results instantly at 1 PM, 6 PM, and 8 PM. View 1st prize winning numbers, official scanned result sheets, complete prize charts, and verify tickets." />
+    <meta name="keywords" content="lottery result, 1 pm lottery result, 6 pm lottery result, 8 pm lottery result, today lottery result, winning numbers, official draw result" />
+    
+    <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      
+      <!-- ==============================================
+           SITE HEADER
+           ============================================== -->
+      <header class="site-header" role="banner">
+        <div class="top-nav">
+          <div class="brand-wrap">
+            <!-- Three-Dots More Menu (⋮) on left side beside brand icon -->
+            <div class="header-menu-wrap brand-menu-wrap">
+              <button type="button" class="action-icon-btn menu-dots-btn" id="btnMenuDots" title="More Options" aria-label="Menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                  <circle cx="12" cy="5" r="2.2"></circle>
+                  <circle cx="12" cy="12" r="2.2"></circle>
+                  <circle cx="12" cy="19" r="2.2"></circle>
+                </svg>
+              </button>
+
+              <div class="header-dropdown-menu" id="headerDropdownMenu" role="menu">
+                <button type="button" class="menu-item-link" id="menuItemJumpYesterday" role="menuitem">
+                  <span class="menu-item-icon">📜</span>
+                  <div class="menu-item-info">
+                    <strong>Previous Day Results</strong>
+                    <small>View yesterday's 1 PM, 6 PM, 8 PM</small>
+                  </div>
+                </button>
+                <button type="button" class="menu-item-link" id="menuItemRefresh" role="menuitem">
+                  <span class="menu-item-icon">🔄</span>
+                  <div class="menu-item-info">
+                    <strong>Refresh Live API</strong>
+                    <small>Check for newly drawn numbers</small>
+                  </div>
+                </button>
+                <a href="admin.html" class="menu-item-link" role="menuitem">
+                  <span class="menu-item-icon">⚙️</span>
+                  <div class="menu-item-info">
+                    <strong>Admin Dashboard</strong>
+                    <small>Manage site settings</small>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div class="brand-icon-box" aria-hidden="true">
+              <!-- Golden Ticket / Star Lottery Emblem -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                <circle cx="12" cy="12" r="2.5"></circle>
+                <path d="M6 6v2M6 16v2M18 6v2M18 16v2"></path>
+              </svg>
+            </div>
+            <div class="brand-info">
+              <h1 class="site-title">Lottery Result</h1>
+              <span class="site-subtitle" id="headerDate">Daily Draw Results</span>
+            </div>
+          </div>
+
+          <div class="header-actions">
+            <div class="live-badge" title="Live official updates">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span id="apiStatusText">Live API Active</span>
+            </div>
+
+            <!-- Live API Refresh Button -->
+            <button type="button" class="action-icon-btn" id="btnRefreshApi" title="Refresh Live API Results" aria-label="Refresh API">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+            </button>
+
+            <!-- Dark / Light Theme Toggle -->
+            <button type="button" class="action-icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">
+              <!-- Sun / Moon Icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            </button>
+
+            <!-- Direct Header Link: Previous Day Results -->
+            <button type="button" class="header-prev-btn" id="btnHeaderPreviousResults" title="Jump to Previous Day Results" aria-label="Previous Day Results">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 8v4l3 3"></path>
+                <circle cx="12" cy="12" r="9"></circle>
+              </svg>
+              <span>Previous Results</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Date Strip & Day Segment Switcher & Date Lookup -->
+        <div class="date-strip-bar">
+          <div class="current-datetime">
+            <span>IST Clock: <strong id="liveTimeClock">--:--:-- IST</strong></span>
+          </div>
+
+          <div class="date-controls-group">
+            <!-- Day Switcher Segment -->
+            <div class="day-segmented-control" role="tablist" aria-label="Select Draw Day">
+              <button type="button" class="day-tab-btn active" data-day="today" role="tab" aria-selected="true" id="dayTabToday">
+                <span>Today</span>
+              </button>
+              <button type="button" class="day-tab-btn" data-day="yesterday" role="tab" aria-selected="false" id="dayTabYesterday">
+                <span>Yesterday</span>
+              </button>
+            </div>
+
+            <!-- Custom Date Lookup Input -->
+            <div class="custom-date-picker-wrap">
+              <label for="dateLookupInput" class="custom-date-label" title="Search results by date">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>By Date:</span>
+              </label>
+              <input type="date" id="dateLookupInput" class="custom-date-input" title="Choose date for Dear Lottery results" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ==============================================
+           MAIN CONTENT
+           ============================================== -->
+      <main class="main-content" id="mainContent" role="main">
+        <!-- MAIN DRAW TIME SELECTOR (TODAY'S DRAWS: 1 PM | 6 PM | 8 PM) -->
+        <section class="draw-selector-section" aria-label="Select Today's Draw Time">
+          <div class="selector-header">
+            <!-- Top Highlight Badge -->
+            <div class="today-highlight-badge" id="scheduleHighlightBadge">
+              <span class="live-dot-red" id="scheduleLiveDot" aria-hidden="true"></span>
+              <span id="scheduleBadgeText">TODAY'S LOTTERY RESULTS</span>
+            </div>
+            <h2 class="selector-main-title" id="selectorMainTitle">SELECT DRAW TIME (TODAY)</h2>
+            <p class="selector-subtitle" id="selectorSubtitle">
+              👉 Click <strong>1 PM</strong>, <strong>6 PM</strong>, or <strong>8 PM</strong> below to view the official result sheet.
+            </p>
+          </div>
+
+          <!-- 3 Prominent Draw Buttons -->
+          <div class="draw-selector-grid" role="group" aria-label="Main Daily Draws">
+            
+            <!-- 1 PM Button -->
+            <button type="button" class="draw-btn draw-1" data-index="0" aria-pressed="false" id="btnDraw1pm">
+              <span class="draw-btn-period">Morning</span>
+              <span class="draw-btn-time">1 PM</span>
+              <span class="draw-btn-status">1:00 PM IST</span>
+              <span class="draw-btn-winner-chip" id="chipDraw1pm">Loading...</span>
+              <span class="active-indicator-tag" aria-hidden="true">Active</span>
+            </button>
+
+            <!-- 6 PM Button -->
+            <button type="button" class="draw-btn draw-2" data-index="1" aria-pressed="false" id="btnDraw6pm">
+              <span class="draw-btn-period">Day</span>
+              <span class="draw-btn-time">6 PM</span>
+              <span class="draw-btn-status">6:00 PM IST</span>
+              <span class="draw-btn-winner-chip" id="chipDraw6pm">Loading...</span>
+              <span class="active-indicator-tag" aria-hidden="true">Active</span>
+            </button>
+
+            <!-- 8 PM Button -->
+            <button type="button" class="draw-btn draw-3" data-index="2" aria-pressed="false" id="btnDraw8pm">
+              <span class="draw-btn-period">Night</span>
+              <span class="draw-btn-time">8 PM</span>
+              <span class="draw-btn-status">8:00 PM IST</span>
+              <span class="draw-btn-winner-chip awaiting" id="chipDraw8pm">Loading...</span>
+              <span class="active-indicator-tag" aria-hidden="true">Active</span>
+            </button>
+
+          </div>
+
+          <!-- Auto-Schedule Indicator Strip -->
+          <div class="schedule-guide-strip" id="scheduleGuideStrip" role="status" aria-label="Draw Schedule Rules">
+            <span class="guide-item" id="guideSlot1pm">
+              <span class="guide-dot dot-1"></span>
+              <strong>1:00 PM – 6:00 PM:</strong> 1 PM Draw
+              <span class="guide-active-tag">Active</span>
+            </span>
+            <span class="guide-divider" aria-hidden="true">•</span>
+            <span class="guide-item" id="guideSlot6pm">
+              <span class="guide-dot dot-2"></span>
+              <strong>6:00 PM – 8:00 PM:</strong> 6 PM Draw
+              <span class="guide-active-tag">Active</span>
+            </span>
+            <span class="guide-divider" aria-hidden="true">•</span>
+            <span class="guide-item" id="guideSlot8pm">
+              <span class="guide-dot dot-3"></span>
+              <strong>8:00 PM – 1:00 PM:</strong> 8 PM Night Draw
+              <span class="guide-active-tag">Active</span>
+            </span>
+          </div>
+        </section>
+
+        <!-- DYNAMIC RESULT SECTION (Today's Selected Draw Result Sheet) -->
+        <section class="result-section" id="resultContainer" aria-live="polite">
+          <!-- Populated dynamically by app.js with Today's Official Result Sheet -->
+        </section>
+
+        <!-- ==============================================
+             YESTERDAY'S OFFICIAL RESULTS SECTION (PREVIOUS DAY)
+             Always displays all 3 draws (1 PM, 6 PM, 8 PM) from yesterday
+             ============================================== -->
+        <section class="yesterday-results-section" id="yesterdaySection" aria-label="Yesterday's Lottery Results">
+          <div class="yesterday-header">
+            <div class="yesterday-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              <span>PREVIOUS RESULTS</span>
+            </div>
+            <h2 class="yesterday-title" id="yesterdaySectionTitle">Previous Day Results</h2>
+            <p class="yesterday-subtitle">All <strong>3 complete official result sheets</strong> from yesterday (1 PM, 6 PM, and 8 PM) are displayed below for immediate reference:</p>
+            
+            <!-- Quick Filter Tabs: All 3 Draws | 1 PM | 6 PM | 8 PM -->
+            <div class="yesterday-filter-tabs" role="tablist" aria-label="Filter yesterday draws">
+              <button type="button" class="yest-filter-btn active" data-slot="all">
+                <span>⭐ All 3 Draws (Show All)</span>
+              </button>
+              <button type="button" class="yest-filter-btn" data-slot="1pm">
+                <span>🔴 1 PM Draw</span>
+              </button>
+              <button type="button" class="yest-filter-btn" data-slot="6pm">
+                <span>🟡 6 PM Draw</span>
+              </button>
+              <button type="button" class="yest-filter-btn" data-slot="8pm">
+                <span>🟢 8 PM Draw</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Container for Yesterday's 3 Official Result Sheets -->
+          <div class="yesterday-sheets-container" id="yesterdaySheetsContainer">
+            <!-- Populated dynamically by app.js with Yesterday's 1 PM, 6 PM, 8 PM sheets -->
+          </div>
+        </section>
+
+      </main>
+
+      <!-- ==============================================
+           FOOTER
+           ============================================== -->
+      <footer class="site-footer" role="contentinfo">
+        <span class="footer-brand">Lottery Result</span>
+        <p class="footer-disclaimer">
+          Result information published for instant public reference only. Always verify your ticket with the official gazette published by the respective Directorate of State Lotteries.
+        </p>
+        <p style="margin-top: 14px;">
+          <a href="admin.html" style="color: var(--text-muted); font-size: 0.75rem; text-decoration: none; opacity: 0.7;">⚙️ Admin Dashboard &bull; Update Results</a>
+        </p>
+      </footer>
+
+    </div>
+
+    <!-- ==============================================
+         LIGHTBOX MODAL (Full Resolution Sheet Inspection)
+         ============================================== -->
+    <div class="sheet-lightbox-modal" id="sheetModal" role="dialog" aria-modal="true" aria-label="Enlarged result sheet">
+      <button type="button" class="lightbox-close-btn" id="modalCloseBtn" aria-label="Close enlarged view">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="lightbox-img-wrapper">
+        <img id="modalImg" src="" alt="Enlarged Result Sheet" />
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast-notice" id="toastNotification" role="status" aria-live="polite"></div>
+
+    <!-- Floating Side Quick Jump Button (For visitors who don't scroll) -->
+    <aside class="floating-quick-dock" aria-label="Quick Navigation">
+      <button type="button" class="floating-prev-jump-btn" id="btnFloatingJumpYest" title="Jump to Previous Day Results">
+        <span class="floating-btn-icon">📜</span>
+        <span class="floating-btn-text">Previous Results</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+    </aside>
+
+    <!-- Application Script -->
+    <script src="js/app.js"></script>
+  </body>
+</html>

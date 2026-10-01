@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Lottery Result — Admin Dashboard & Control Panel</title>
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body>
+    
+    <!-- Top Admin Bar -->
+    <header class="admin-navbar">
+      <div class="admin-brand">
+        <span class="admin-badge">Admin Panel</span>
+        <strong style="font-family: 'Outfit', sans-serif; font-size: 1.1rem;">Lottery Result Manager</strong>
+      </div>
+      <div class="admin-nav-actions">
+        <a href="index.html" class="btn-view-site" target="_blank" rel="noopener">
+          <span>View Live Site</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="admin-container">
+
+      <!-- Passcode Login View (Shown if not unlocked) -->
+      <section id="authSection" class="auth-overlay">
+        <div class="auth-card">
+          <div style="font-size: 2.2rem; margin-bottom: 10px;">🔐</div>
+          <h2>Admin Access</h2>
+          <p>Enter your 4-digit PIN to manage draws & results. (Default PIN: <b>1234</b>)</p>
+          <form id="pinAuthForm" onsubmit="return false;">
+            <div class="pin-input-group">
+              <input type="password" id="pinInput" class="pin-input" maxlength="6" placeholder="••••" inputmode="numeric" autofocus />
+            </div>
+            <button type="submit" class="btn-auth-submit" id="btnPinSubmit">Unlock Admin Panel</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Admin Editor Workspace (Shown after unlock) -->
+      <section id="editorSection" style="display: none;">
+        
+        <!-- Draw Select Tabs (1 PM | 6 PM | 8 PM) -->
+        <div class="admin-tabs-row" role="tablist" aria-label="Select Draw Time">
+          <button type="button" class="admin-draw-tab active draw-1" data-draw="0" id="tabAdmin1pm">
+            <span class="tab-period-sub">Morning</span>
+            <span>1 PM Draw</span>
+          </button>
+          <button type="button" class="admin-draw-tab draw-2" data-draw="1" id="tabAdmin6pm">
+            <span class="tab-period-sub">Day</span>
+            <span>6 PM Draw</span>
+          </button>
+          <button type="button" class="admin-draw-tab draw-3" data-draw="2" id="tabAdmin8pm">
+            <span class="tab-period-sub">Night</span>
+            <span>8 PM Draw</span>
+          </button>
+        </div>
+
+        <!-- Day Selector (Today vs Yesterday) -->
+        <div class="admin-day-bar">
+          <div>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Editing Result for:</span>
+            <strong id="activeEditingLabel" style="margin-left: 6px; color: #fff;">1 PM &bull; Today's Result</strong>
+          </div>
+          <div class="day-toggle-group">
+            <button type="button" class="btn-day-toggle active" data-day="today" id="btnAdminToday">Today</button>
+            <button type="button" class="btn-day-toggle" data-day="yesterday" id="btnAdminYesterday">Yesterday</button>
+          </div>
+        </div>
+
+        <!-- Section 1: Winning Number & Draw Information -->
+        <section class="admin-card">
+          <h3 class="admin-card-title">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+            <span>1st Prize Winning Number & Draw Details</span>
+          </h3>
+
+          <div class="form-grid form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="inpTicketSeries">Ticket Series (e.g. E 82 / 73H / B 64)</label>
+              <input type="text" id="inpTicketSeries" class="form-input form-input-number" placeholder="E 82" maxlength="8" />
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="inpWinningDigits">5-Digit Winning Number</label>
+              <input type="text" id="inpWinningDigits" class="form-input form-input-number" placeholder="49137" maxlength="6" inputmode="numeric" />
+            </div>
+          </div>
+
+          <!-- Live Preview of Winning Number -->
+          <div class="live-preview-box">
+            <div class="live-preview-label">Live Result Display Preview</div>
+            <div class="live-preview-digits" id="liveDigitsPreview">E 82 &nbsp; 4 9 1 3 7</div>
+          </div>
+
+          <div class="form-grid form-grid-2" style="margin-top: 16px;">
+            <div class="form-field">
+              <label class="form-label" for="inpFirstPrize">First Prize Amount</label>
+              <input type="text" id="inpFirstPrize" class="form-input" placeholder="₹1,00,00,000 (1 Crore)" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="inpDrawTitle">Draw Title / Name</label>
+              <input type="text" id="inpDrawTitle" class="form-input" placeholder="Dear Desert Morning Result" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Official Result Sheet Image Upload (Mobile Camera / Gallery) -->
+        <section class="admin-card">
+          <h3 class="admin-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span>Upload Official Result Sheet (From Phone or PC)</span>
+          </h3>
+
+          <div class="upload-dropzone" id="uploadZone">
+            <input type="file" id="sheetFileInput" class="file-hidden-input" accept="image/*" />
+            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <div class="upload-prompt">Tap to take photo or choose image from gallery</div>
+            <div class="upload-sub">Supports JPG, PNG, WEBP (auto-compressed for fast loading)</div>
+          </div>
+
+          <!-- Active Preview -->
+          <div class="sheet-preview-wrapper" id="sheetPreviewBox">
+            <img id="activeSheetPreviewImg" src="assets/lottery_sheet_1pm.jpg" alt="Result sheet preview" />
+            <button type="button" class="btn-remove-custom-img" id="btnRevertDefaultImg" title="Revert to standard sheet">Reset to Default Image</button>
+          </div>
+        </section>
+
+        <!-- Section 3: 2nd, 3rd, 4th, 5th Prizes Numbers -->
+        <section class="admin-card">
+          <h3 class="admin-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            <span>Complete Prize Numbers Breakdown</span>
+          </h3>
+
+          <div class="form-field" style="margin-bottom: 14px;">
+            <label class="form-label" for="inpConsPrize">Consolation Prize (₹1,000) — e.g. 99737</label>
+            <input type="text" id="inpConsPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="99737" />
+          </div>
+
+          <div class="form-field" style="margin-bottom: 14px;">
+            <label class="form-label" for="inpSecondPrize">2nd Prize (10 Numbers, ₹9,000 Each) — separated by space or comma</label>
+            <input type="text" id="inpSecondPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="01234, 15678, 24090, 15624..." />
+          </div>
+
+          <div class="form-field" style="margin-bottom: 14px;">
+            <label class="form-label" for="inpThirdPrize">3rd Prize (10 Numbers, ₹500 Each)</label>
+            <input type="text" id="inpThirdPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="29876, 31452, 32431..." />
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="inpFourthPrize">4th Prize Numbers (₹250)</label>
+              <input type="text" id="inpFourthPrize" class="form-input" placeholder="1209, 1214, 1232, 1191..." />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="inpFifthPrize">5th Prize Numbers (₹120)</label>
+              <input type="text" id="inpFifthPrize" class="form-input" placeholder="0012, 0032, 0054, 0064..." />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3.5: Automated Draw Timing Schedule & Simulation Controls -->
+        <section class="admin-card" id="scheduleAdminCard">
+          <h3 class="admin-card-title">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Automated Draw Timing Schedule &amp; Testing Controls</span>
+          </h3>
+
+          <div class="api-info-box" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
+            <strong>Scheduled Auto-Switch Rules (IST):</strong><br />
+            • <b>1:00 PM – 6:00 PM:</b> Displays 1 PM Morning Draw result.<br />
+            • <b>6:00 PM – 8:00 PM:</b> Displays 6 PM Day Draw result.<br />
+            • <b>8:00 PM – 1:00 PM (Next Day):</b> Displays 8 PM Night Draw result. <em>(Before 1 PM, automatically shows previous night's 8 PM result with the official banner).</em>
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div class="form-field">
+              <label class="form-label">Current System Time / Active State</label>
+              <div id="adminLiveClockDisplay" style="font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 800; color: #10b981; padding: 10px 14px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid var(--admin-border);">
+                Loading IST...
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Active Schedule Slot</label>
+              <div id="adminActiveSlotDisplay" style="font-size: 0.95rem; font-weight: 700; color: #fff; padding: 10px 14px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid var(--admin-border);">
+                Calculating...
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px;">
+            <label class="form-label" style="margin-bottom: 8px;">Quick Test Simulations (Simulate any time to preview user experience):</label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-reset-default" id="btnSimulateMorning" style="color: #60a5fa; border-color: rgba(96, 165, 250, 0.4);">
+                Simulate 11:30 AM (8 PM Night Active)
+              </button>
+              <button type="button" class="btn-reset-default" id="btnSimulateAfternoon" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.4);">
+                Simulate 2:30 PM (1 PM Draw Active)
+              </button>
+              <button type="button" class="btn-reset-default" id="btnSimulateEvening" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);">
+                Simulate 6:45 PM (6 PM Draw Active)
+              </button>
+              <button type="button" class="btn-reset-default" id="btnSimulateNight" style="color: #10b981; border-color: rgba(16, 185, 129, 0.4);">
+                Simulate 9:15 PM (8 PM Draw Active)
+              </button>
+              <button type="button" class="btn-reset-default" id="btnResetRealTime" style="color: #fff; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+                Reset to Live Real Time ⏱️
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Automated API Integration Settings -->
+        <section class="admin-card">
+          <h3 class="admin-card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+            <span>Live Dear Lottery API Status &amp; Controls</span>
+          </h3>
+
+          <div class="api-info-box">
+            <strong>Active API Integration:</strong> Connected to <b>Dear Lottery Results API</b> (<a href="https://indialotteryapi.com/dear-lottery-api/" target="_blank" rel="noopener" style="color: #60a5fa;">indialotteryapi.com</a>). Data is automatically fetched and refreshed for 1 PM, 6 PM, and 8 PM draws. No authentication key required.
+          </div>
+
+          <div class="form-grid form-grid-2">
+            <div class="form-field">
+              <label class="form-label" for="inpApiUrl">Active API Base Endpoint</label>
+              <input type="url" id="inpApiUrl" class="form-input" value="https://indialotteryapi.com/wp-json/dearlottery/v1" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="inpApiKey">Status / Mode</label>
+              <input type="text" id="inpApiKey" class="form-input" value="Active (Public REST / CORS Enabled)" readonly style="color: var(--accent-green);" />
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn-reset-default" id="btnTestApi" style="color: #fff; border-color: var(--accent-blue);">
+              <span>Test API Connection</span>
+            </button>
+            <button type="button" class="btn-save-publish" id="btnSyncFromApiNow" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              <span>Sync All Draws from API Now</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Sticky Save / Publish Bar -->
+        <div class="admin-sticky-actions">
+          <button type="button" class="btn-reset-default" id="btnResetAllDefaults">Reset to Default Data</button>
+          <button type="button" class="btn-save-publish" id="btnSaveDrawResult">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            <span>Save &amp; Publish Result</span>
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Admin Toast Notification -->
+    <div class="admin-toast" id="adminToast"></div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>
