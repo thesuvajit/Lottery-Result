@@ -1,0 +1,8 @@
+# Robots.txt for Lottery Sambad Result
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin
+
+# Sitemap location
+Sitemap: https://lottery-result.netlify.app/sitemap.xml
