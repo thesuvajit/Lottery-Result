@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Lottery Result — Admin Dashboard & Control Panel</title>
+    <title>Lottery Result — Admin Dashboard &amp; Control Panel</title>
     <meta name="robots" content="noindex, nofollow" />
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,7 +36,7 @@
         <div class="auth-card">
           <div style="font-size: 2.2rem; margin-bottom: 10px;">🔐</div>
           <h2>Admin Access</h2>
-          <p>Enter your 4-digit PIN to manage draws & results. (Default PIN: <b>1234</b>)</p>
+          <p>Enter your 4-digit PIN to manage draws &amp; results. (Default PIN: <b>1234</b>)</p>
           <form id="pinAuthForm" onsubmit="return false;">
             <div class="pin-input-group">
               <input type="password" id="pinInput" class="pin-input" maxlength="6" placeholder="••••" inputmode="numeric" autofocus />
@@ -81,25 +81,25 @@
         <section class="admin-card">
           <h3 class="admin-card-title">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-            <span>1st Prize Winning Number & Draw Details</span>
+            <span>1st Prize Winning Number &amp; Draw Details</span>
           </h3>
 
           <div class="form-grid form-grid-2">
             <div class="form-field">
-              <label class="form-label" for="inpTicketSeries">Ticket Series (e.g. E 82 / 73H / B 64)</label>
-              <input type="text" id="inpTicketSeries" class="form-input form-input-number" placeholder="E 82" maxlength="8" />
+              <label class="form-label" for="inpTicketSeries">Ticket Series (e.g. E 82 / 73H / 65K)</label>
+              <input type="text" id="inpTicketSeries" class="form-input form-input-number" placeholder="65K" maxlength="8" />
             </div>
 
             <div class="form-field">
               <label class="form-label" for="inpWinningDigits">5-Digit Winning Number</label>
-              <input type="text" id="inpWinningDigits" class="form-input form-input-number" placeholder="49137" maxlength="6" inputmode="numeric" />
+              <input type="text" id="inpWinningDigits" class="form-input form-input-number" placeholder="79690" maxlength="6" inputmode="numeric" />
             </div>
           </div>
 
-          <!-- Live Preview of Winning Number -->
+          <!-- Live Preview of Winning Number in Image 2 Style -->
           <div class="live-preview-box">
-            <div class="live-preview-label">Live Result Display Preview</div>
-            <div class="live-preview-digits" id="liveDigitsPreview">E 82 &nbsp; 4 9 1 3 7</div>
+            <div class="live-preview-label">Target Result Header Preview (Image 2 Style)</div>
+            <div class="live-preview-digits" id="liveDigitsPreview" style="color: #10b981;">&lt; 65K 79690</div>
           </div>
 
           <div class="form-grid form-grid-2" style="margin-top: 16px;">
@@ -108,18 +108,44 @@
               <input type="text" id="inpFirstPrize" class="form-input" placeholder="₹1,00,00,000 (1 Crore)" />
             </div>
             <div class="form-field">
-              <label class="form-label" for="inpDrawTitle">Draw Title / Name</label>
-              <input type="text" id="inpDrawTitle" class="form-input" placeholder="Dear Desert Morning Result" />
+              <label class="form-label" for="inpDrawTitle">Draw Title / Scheme</label>
+              <input type="text" id="inpDrawTitle" class="form-input" placeholder="DEAR FAME THURSDAY WEEKLY LOTTERY" />
+            </div>
+          </div>
+
+          <div class="form-grid form-grid-2" style="margin-top: 14px;">
+            <div class="form-field">
+              <label class="form-label" for="selectSourceStatus">Data Source Status</label>
+              <select id="selectSourceStatus" class="form-input" style="cursor: pointer;">
+                <option value="api_fetched">API Fetched (Automatic Live Feed)</option>
+                <option value="manually_entered">Manually Entered (Admin Entry)</option>
+                <option value="source_verified">Source Verified (Official Gazette Matched)</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="inpDrawNumber">Draw Number</label>
+              <input type="text" id="inpDrawNumber" class="form-input" placeholder="48" />
             </div>
           </div>
         </section>
 
-        <!-- Section 2: Official Result Sheet Image Upload (Mobile Camera / Gallery) -->
+        <!-- Section 2: Official Result Sheet Image & PDF Management -->
         <section class="admin-card">
           <h3 class="admin-card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-            <span>Upload Official Result Sheet (From Phone or PC)</span>
+            <span>Official Result Sheet Image &amp; PDF Management</span>
           </h3>
+
+          <div class="form-grid form-grid-2" style="margin-bottom: 14px;">
+            <div class="form-field">
+              <label class="form-label" for="inpSheetUrl">Scanned Sheet Image URL (Optional Online Link)</label>
+              <input type="url" id="inpSheetUrl" class="form-input" placeholder="https://example.com/scans/sheet_8pm.jpg" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="inpPdfUrl">Official PDF Download URL (Optional)</label>
+              <input type="url" id="inpPdfUrl" class="form-input" placeholder="https://example.com/downloads/lottery_8pm.pdf" />
+            </div>
+          </div>
 
           <div class="upload-dropzone" id="uploadZone">
             <input type="file" id="sheetFileInput" class="file-hidden-input" accept="image/*" />
@@ -129,17 +155,19 @@
               <line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
             <div class="upload-prompt">Tap to take photo or choose image from gallery</div>
-            <div class="upload-sub">Supports JPG, PNG, WEBP (auto-compressed for fast loading)</div>
+            <div class="upload-sub">Supports JPG, PNG, WEBP (auto-compressed with HTML5 Canvas)</div>
           </div>
 
           <!-- Active Preview -->
           <div class="sheet-preview-wrapper" id="sheetPreviewBox">
             <img id="activeSheetPreviewImg" src="assets/lottery_sheet_1pm.jpg" alt="Result sheet preview" />
-            <button type="button" class="btn-remove-custom-img" id="btnRevertDefaultImg" title="Revert to standard sheet">Reset to Default Image</button>
+            <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
+              <button type="button" class="btn-remove-custom-img" id="btnRevertDefaultImg" title="Revert to standard sheet">Reset to Default Image</button>
+            </div>
           </div>
         </section>
 
-        <!-- Section 3: 2nd, 3rd, 4th, 5th Prizes Numbers -->
+        <!-- Section 3: 2nd, 3rd, 4th, 5th Prizes Breakdown -->
         <section class="admin-card">
           <h3 class="admin-card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
@@ -147,28 +175,28 @@
           </h3>
 
           <div class="form-field" style="margin-bottom: 14px;">
-            <label class="form-label" for="inpConsPrize">Consolation Prize (₹1,000) — e.g. 99737</label>
-            <input type="text" id="inpConsPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="99737" />
+            <label class="form-label" for="inpConsPrize">Consolation Prize (₹1,000) — e.g. 79690</label>
+            <input type="text" id="inpConsPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="79690" />
           </div>
 
           <div class="form-field" style="margin-bottom: 14px;">
-            <label class="form-label" for="inpSecondPrize">2nd Prize (10 Numbers, ₹9,000 Each) — separated by space or comma</label>
-            <input type="text" id="inpSecondPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="01234, 15678, 24090, 15624..." />
+            <label class="form-label" for="inpSecondPrize">2nd Prize (10 Numbers, ₹10,000 Each) — separated by space or comma</label>
+            <input type="text" id="inpSecondPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="22101, 22292, 23384, 30153, 40961..." />
           </div>
 
           <div class="form-field" style="margin-bottom: 14px;">
             <label class="form-label" for="inpThirdPrize">3rd Prize (10 Numbers, ₹500 Each)</label>
-            <input type="text" id="inpThirdPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="29876, 31452, 32431..." />
+            <input type="text" id="inpThirdPrize" class="form-input form-input-number" style="font-size: 0.95rem;" placeholder="0079, 1022, 1525, 3035, 5528..." />
           </div>
 
           <div class="form-grid form-grid-2">
             <div class="form-field">
               <label class="form-label" for="inpFourthPrize">4th Prize Numbers (₹250)</label>
-              <input type="text" id="inpFourthPrize" class="form-input" placeholder="1209, 1214, 1232, 1191..." />
+              <input type="text" id="inpFourthPrize" class="form-input" placeholder="2494, 4073, 4106, 5976..." />
             </div>
             <div class="form-field">
-              <label class="form-label" for="inpFifthPrize">5th Prize Numbers (₹120)</label>
-              <input type="text" id="inpFifthPrize" class="form-input" placeholder="0012, 0032, 0054, 0064..." />
+              <label class="form-label" for="inpFifthPrize">5th Prize Numbers (100 Numbers, ₹120)</label>
+              <input type="text" id="inpFifthPrize" class="form-input" placeholder="0001, 0083, 0164, 0238..." />
             </div>
           </div>
         </section>
@@ -184,7 +212,7 @@
             <strong>Scheduled Auto-Switch Rules (IST):</strong><br />
             • <b>1:00 PM – 6:00 PM:</b> Displays 1 PM Morning Draw result.<br />
             • <b>6:00 PM – 8:00 PM:</b> Displays 6 PM Day Draw result.<br />
-            • <b>8:00 PM – 1:00 PM (Next Day):</b> Displays 8 PM Night Draw result. <em>(Before 1 PM, automatically shows previous night's 8 PM result with the official banner).</em>
+            • <b>8:00 PM – 1:00 PM (Next Day):</b> Displays 8 PM Night Draw result. <em>(Before 1 PM, automatically shows previous night's 8 PM result).</em>
           </div>
 
           <div class="form-grid form-grid-2">
@@ -224,42 +252,47 @@
           </div>
         </section>
 
-        <!-- Section 4: Automated API Integration Settings -->
+        <!-- Section 4: Live Sambad.tv API Status & Controls -->
         <section class="admin-card">
           <h3 class="admin-card-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
-            <span>Live Dear Lottery API Status &amp; Controls</span>
+            <span>Live Sambad.tv API &amp; Result Sheet Controls</span>
           </h3>
 
           <div class="api-info-box">
-            <strong>Active API Integration:</strong> Connected to <b>Dear Lottery Results API</b> (<a href="https://indialotteryapi.com/dear-lottery-api/" target="_blank" rel="noopener" style="color: #60a5fa;">indialotteryapi.com</a>). Data is automatically fetched and refreshed for 1 PM, 6 PM, and 8 PM draws. No authentication key required.
+            <strong>Active API Integration:</strong> Connected to <b>Sambad.tv Official Results &amp; Embed API</b> (<a href="https://sambad.tv/api/" target="_blank" rel="noopener" style="color: #60a5fa;">sambad.tv/api</a>). Scanned result sheet images, live embeds, and official PDF documents are automatically linked and synced for 1 PM, 6 PM, and 8 PM draws.
           </div>
 
           <div class="form-grid form-grid-2">
             <div class="form-field">
-              <label class="form-label" for="inpApiUrl">Active API Base Endpoint</label>
-              <input type="url" id="inpApiUrl" class="form-input" value="https://indialotteryapi.com/wp-json/dearlottery/v1" />
+              <label class="form-label" for="inpApiUrl">Sambad.tv Uploads &amp; API Base</label>
+              <input type="url" id="inpApiUrl" class="form-input" value="https://admin.sambad.tv/wp-content/uploads" />
             </div>
             <div class="form-field">
-              <label class="form-label" for="inpApiKey">Status / Mode</label>
-              <input type="text" id="inpApiKey" class="form-input" value="Active (Public REST / CORS Enabled)" readonly style="color: var(--accent-green);" />
+              <label class="form-label" for="inpApiKey">Status / Integration Mode</label>
+              <input type="text" id="inpApiKey" class="form-input" value="Active (Sambad Official Scanned Sheets + Embeds)" readonly style="color: var(--accent-green);" />
             </div>
           </div>
 
           <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button type="button" class="btn-reset-default" id="btnTestApi" style="color: #fff; border-color: var(--accent-blue);">
-              <span>Test API Connection</span>
+              <span>Test Sambad Sheet Connection</span>
             </button>
             <button type="button" class="btn-save-publish" id="btnSyncFromApiNow" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-              <span>Sync All Draws from API Now</span>
+              <span>Sync Sambad Sheets &amp; Numbers Now</span>
             </button>
           </div>
         </section>
 
         <!-- Sticky Save / Publish Bar -->
         <div class="admin-sticky-actions">
-          <button type="button" class="btn-reset-default" id="btnResetAllDefaults">Reset to Default Data</button>
+          <button type="button" class="btn-reset-default" id="btnResetSlotData" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+            Reset This Slot
+          </button>
+          <button type="button" class="btn-reset-default" id="btnResetAllDefaults">
+            Reset All Defaults
+          </button>
           <button type="button" class="btn-save-publish" id="btnSaveDrawResult">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
             <span>Save &amp; Publish Result</span>

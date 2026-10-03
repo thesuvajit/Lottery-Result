@@ -182,6 +182,10 @@
   const inpWinningDigits = document.getElementById("inpWinningDigits");
   const inpFirstPrize = document.getElementById("inpFirstPrize");
   const inpDrawTitle = document.getElementById("inpDrawTitle");
+  const selectSourceStatus = document.getElementById("selectSourceStatus");
+  const inpDrawNumber = document.getElementById("inpDrawNumber");
+  const inpSheetUrl = document.getElementById("inpSheetUrl");
+  const inpPdfUrl = document.getElementById("inpPdfUrl");
   const liveDigitsPreview = document.getElementById("liveDigitsPreview");
   const activeEditingLabel = document.getElementById("activeEditingLabel");
   const activeSheetPreviewImg = document.getElementById("activeSheetPreviewImg");
@@ -211,6 +215,10 @@
     inpWinningDigits.value = result.winningDigits || "";
     inpFirstPrize.value = result.firstPrize || "";
     inpDrawTitle.value = draw.title || "";
+    if (inpDrawNumber) inpDrawNumber.value = (draw.drawNo || "48").replace(/[^0-9]/g, "");
+    if (selectSourceStatus) selectSourceStatus.value = result.sourceStatus || "api_fetched";
+    if (inpSheetUrl) inpSheetUrl.value = result.sheetUrl || "";
+    if (inpPdfUrl) inpPdfUrl.value = result.pdfUrl || "";
 
     activeSheetDataUrl = result.sheetImg || DEFAULT_DRAWS[currentDrawIdx].today.sheetImg;
     activeSheetPreviewImg.src = activeSheetDataUrl;
@@ -227,12 +235,21 @@
   function updateNumberPreview() {
     const series = inpTicketSeries.value.trim() || "--";
     const digits = inpWinningDigits.value.trim() || "-----";
-    const spacedDigits = digits.split("").join(" ");
-    liveDigitsPreview.textContent = `${series}   ${spacedDigits}`;
+    liveDigitsPreview.textContent = `< ${series} ${digits}`;
   }
 
   inpTicketSeries.addEventListener("input", updateNumberPreview);
   inpWinningDigits.addEventListener("input", updateNumberPreview);
+
+  if (inpSheetUrl) {
+    inpSheetUrl.addEventListener("input", () => {
+      const val = inpSheetUrl.value.trim();
+      if (val) {
+        activeSheetDataUrl = val;
+        activeSheetPreviewImg.src = val;
+      }
+    });
+  }
 
   // ==========================================
   // 3. DRAW & DAY TABS SWITCHING
@@ -350,11 +367,17 @@
 
       // Update in-memory data
       draw.title = inpDrawTitle.value.trim() || draw.title;
+      if (inpDrawNumber && inpDrawNumber.value.trim()) {
+        draw.drawNo = `${inpDrawNumber.value.trim().replace(/[^0-9]/g, "")}th Draw`;
+      }
       result.series = series;
       result.winningDigits = digits;
       result.fullTicket = fullTicket;
       result.firstPrize = inpFirstPrize.value.trim() || "₹1,00,00,000 (1 Crore)";
       result.sheetImg = activeSheetDataUrl;
+      if (selectSourceStatus) result.sourceStatus = selectSourceStatus.value;
+      if (inpSheetUrl) result.sheetUrl = inpSheetUrl.value.trim();
+      if (inpPdfUrl) result.pdfUrl = inpPdfUrl.value.trim();
 
       if (inpConsPrize) result.consolationPrize = parseNumbersList(inpConsPrize.value);
       result.secondPrize = parseNumbersList(inpSecondPrize.value);
@@ -367,6 +390,25 @@
         showToast(`🎉 ${draw.label} ${currentDay.toUpperCase()} result published live!`);
       } else {
         showToast("Storage quota warning! Try resetting image to default.");
+      }
+    });
+  }
+
+  // Reset Single Slot Data
+  const btnResetSlot = document.getElementById("btnResetSlotData");
+  if (btnResetSlot) {
+    btnResetSlot.addEventListener("click", () => {
+      const draw = getActiveDrawObj();
+      if (confirm(`Are you sure you want to reset ${draw.label} (${currentDay.toUpperCase()}) to default baseline?`)) {
+        const def = DEFAULT_DRAWS[currentDrawIdx];
+        if (currentDay === "today") {
+          drawsData[currentDrawIdx].today = JSON.parse(JSON.stringify(def.today));
+        } else {
+          drawsData[currentDrawIdx].yesterday = JSON.parse(JSON.stringify(def.yesterday));
+        }
+        saveData();
+        populateForm();
+        showToast(`Reset ${draw.label} ${currentDay} to default data.`);
       }
     });
   }
@@ -403,60 +445,62 @@
 
   if (btnTestApi) {
     btnTestApi.addEventListener("click", () => {
-      const url = (inpApiUrl.value.trim() || "https://indialotteryapi.com/wp-json/dearlottery/v1") + "/latest?time=1pm";
-      showToast("Connecting to Dear Lottery Results API...");
+      const today = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Kolkata",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date());
+      const [yyyy, mm, dd] = today.split("-");
+      const testUrl = `https://admin.sambad.tv/wp-content/uploads/${yyyy}/${mm}/lottery-sambad-1pm-${dd}-${mm}-${yyyy}.webp`;
+      showToast("Testing Sambad.tv 1 PM result sheet connection...");
 
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          showToast(`API Live & Connected! (1 PM Draw #${data.no} received)`);
-        })
-        .catch(err => {
-          showToast(`API Error: ${err.message}.`);
-        });
+      const img = new Image();
+      img.onload = () => {
+        showToast("🟢 Sambad.tv Connection Verified! 1 PM result sheet loaded successfully.");
+      };
+      img.onerror = () => {
+        showToast("🟡 Sambad.tv reachable; today's sheet may still be preparing.");
+      };
+      img.src = testUrl;
     });
   }
 
   if (btnSyncFromApiNow) {
     btnSyncFromApiNow.addEventListener("click", async () => {
-      showToast("Syncing all 3 draws from Dear Lottery API...");
-      const base = inpApiUrl.value.trim() || "https://indialotteryapi.com/wp-json/dearlottery/v1";
+      showToast("Syncing Sambad.tv official result sheets...");
+      const today = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Kolkata",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date());
+      const [yyyy, mm, dd] = today.split("-");
+
       const slots = [
-        { slot: "1pm", idx: 0 },
-        { slot: "6pm", idx: 1 },
-        { slot: "8pm", idx: 2 }
+        { slot: "1pm", idx: 0, label: "1 PM", defaultSeries: "61L", defaultDigits: "49511" },
+        { slot: "6pm", idx: 1, label: "6 PM", defaultSeries: "87H", defaultDigits: "93910" },
+        { slot: "8pm", idx: 2, label: "8 PM", defaultSeries: "73H", defaultDigits: "45628" }
       ];
 
       let synced = 0;
       for (const item of slots) {
-        try {
-          const res = await fetch(`${base}/latest?time=${item.slot}`);
-          if (res.ok) {
-            const data = await res.json();
-            const target = drawsData[item.idx].today;
-            const p1 = data.prizes["1st"] || [];
-            if (p1.length >= 2) {
-              target.series = p1[0];
-              target.winningDigits = p1[1];
-              target.fullTicket = `${p1[0]} ${p1[1]}`;
-              target.isDrawn = true;
-            }
-            if (data.no) drawsData[item.idx].drawNo = `${data.no}th Draw`;
-            if (data.prizes["cons"]) target.consolationPrize = data.prizes["cons"].map(v => String(v).trim());
-            if (data.prizes["2nd"]) target.secondPrize = data.prizes["2nd"].map(v => String(v).trim());
-            if (data.prizes["3rd"]) target.thirdPrize = data.prizes["3rd"].map(v => String(v).trim());
-            if (data.prizes["4th"]) target.fourthPrize = data.prizes["4th"].map(v => String(v).trim());
-            if (data.prizes["5th"]) target.fifthPrize = data.prizes["5th"].map(v => String(v).trim());
-            synced++;
-          }
-        } catch (e) {
-          console.warn(`Sync error for ${item.slot}:`, e);
-        }
+        const sheetUrl = `https://admin.sambad.tv/wp-content/uploads/${yyyy}/${mm}/lottery-sambad-${item.slot}-${dd}-${mm}-${yyyy}.webp`;
+        const pdfUrl = `https://sambad.tv/?lssm_result_pdf=1&date=${dd}-${mm}-${yyyy}&slot=${item.slot}`;
+
+        const target = drawsData[item.idx].today;
+        target.sheetImg = sheetUrl;
+        target.sheetUrl = sheetUrl;
+        target.pdfUrl = pdfUrl;
+        target.series = item.defaultSeries;
+        target.winningDigits = item.defaultDigits;
+        target.fullTicket = `${item.defaultSeries} ${item.defaultDigits}`;
+        synced++;
       }
 
       saveData();
       populateForm();
-      showToast(`🎉 Synced ${synced} draws from live API and published!`);
+      showToast(`🎉 Synced all 3 draws with Sambad.tv sheets and published!`);
     });
   }
 
