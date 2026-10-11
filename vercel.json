@@ -3,11 +3,15 @@
   "framework": null,
   "buildCommand": null,
   "outputDirectory": ".",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "rewrites": [
     {
       "source": "/admin",
       "destination": "/admin.html"
+    },
+    {
+      "source": "/google29e45574c0efabce",
+      "destination": "/google29e45574c0efabce.html"
     }
   ],
   "headers": [
