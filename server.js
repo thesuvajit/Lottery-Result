@@ -19,11 +19,17 @@ function createStaticServer(port) {
   const server = http.createServer((req, res) => {
     let reqPath = decodeURI(req.url.split('?')[0]);
     if (reqPath === '/' || reqPath === '') reqPath = '/index.html';
+    if (reqPath === '/admin' || reqPath === '/admin/') reqPath = '/admin.html';
     
     let filePath = path.join(__dirname, reqPath);
     if (!filePath.startsWith(__dirname)) {
       res.writeHead(403);
       return res.end('Forbidden');
+    }
+
+    // Support clean URLs e.g. /admin -> /admin.html
+    if (path.extname(filePath) === '' && fs.existsSync(filePath + '.html')) {
+      filePath = filePath + '.html';
     }
 
     fs.stat(filePath, (err, stats) => {

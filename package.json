@@ -1,0 +1,17 @@
+{
+  "name": "lottery-result",
+  "version": "1.0.0",
+  "description": "Lottery Sambad Result Today — 1 PM, 6 PM, 8 PM Official Results",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "lottery",
+    "lottery-sambad",
+    "results"
+  ],
+  "author": "suvajit",
+  "license": "MIT"
+}

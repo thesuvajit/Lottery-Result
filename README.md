@@ -22,7 +22,9 @@ A modern, high-performance, and responsive web application designed for displayi
 ```
 ├── index.html                   # Main public lottery result interface
 ├── admin.html                   # Secure admin control panel
-├── _redirects                   # Netlify routing configuration (/admin -> /admin.html)
+├── vercel.json                  # Vercel deployment & routing configuration (/admin -> /admin.html)
+├── package.json                 # Project manifest & npm scripts
+├── server.js                    # Local development server with clean routing
 ├── .gitignore                   # Ignored files configuration
 ├── css/
 │   ├── style.css                # Design system & stylesheet for main site
@@ -40,19 +42,32 @@ A modern, high-performance, and responsive web application designed for displayi
 
 ---
 
-## 🚀 Deployment on Netlify
+## 🚀 Deployment on Vercel
 
-This project is a 100% static web application and deploys instantly on Netlify:
+This project is fully optimized for **[Vercel](https://vercel.com/)** with instant global Edge CDN and automated continuous deployment:
 
-1. Log in to [Netlify](https://app.netlify.com/).
-2. Click **"Add new site"** &rarr; **"Import an existing project"**.
-3. Choose **GitHub** and select the repository `thesuvajit/Lottery-Result`.
-4. Leave build settings as default:
-   - **Base directory**: *(leave empty)*
-   - **Build command**: *(leave empty)*
-   - **Publish directory**: `.` *(or leave empty)*
-5. Click **"Deploy site"**.
-6. Your lottery site will be live immediately with free HTTPS and global CDN.
+### Method 1: Import via Vercel Dashboard (Recommended)
+
+1. Log in to [Vercel](https://vercel.com/).
+2. Click **"Add New..."** &rarr; **"Project"**.
+3. Under **Import Git Repository**, select `thesuvajit/Lottery-Result`.
+4. Keep the default settings:
+   - **Framework Preset**: `Other` (auto-detected)
+   - **Root Directory**: `./`
+   - **Build Command**: *(leave empty)*
+   - **Output Directory**: *(leave empty)*
+5. Click **"Deploy"**.
+6. Your lottery site will be live instantly with a free `.vercel.app` domain, automatic SSL/HTTPS, and zero configuration!
+
+### Method 2: Deploy via Vercel CLI
+
+```bash
+# Install Vercel CLI (if not already installed)
+npm install -g vercel
+
+# Deploy directly from your terminal
+vercel
+```
 
 ---
 
@@ -61,10 +76,10 @@ This project is a 100% static web application and deploys instantly on Netlify:
 To test or run locally:
 
 ```bash
-# Using Python
-python -m http.server 3000
+# Using Node (starts server on port 3000, 5500, and 8080)
+npm start
 
-# Or using Node / npx
+# Or using npx serve
 npx serve .
 ```
 
@@ -74,5 +89,6 @@ Then open `http://localhost:3000` in your web browser.
 
 ## 🔒 Admin Access
 
-- Access the Admin Dashboard via: `http://localhost:3000/admin.html` (or `https://your-site.netlify.app/admin`)
+- Access the Admin Dashboard via: `http://localhost:3000/admin` (or `http://localhost:3000/admin.html`)
+- On Vercel: `https://your-site.vercel.app/admin`
 - Default PIN: `1234`

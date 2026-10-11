@@ -10,5 +10,10 @@ desktop.ini
 *.sublime-project
 *.sublime-workspace
 
+# Vercel & Node
+.vercel
+node_modules/
+
 # Logs
 *.log
+
