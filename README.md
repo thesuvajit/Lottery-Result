@@ -23,7 +23,6 @@ A modern, high-performance, and responsive web application designed for displayi
 ├── index.html                   # Main public lottery result interface
 ├── admin.html                   # Secure admin control panel
 ├── vercel.json                  # Vercel deployment & routing configuration (/admin -> /admin.html)
-├── package.json                 # Project manifest & npm scripts
 ├── server.js                    # Local development server with clean routing
 ├── .gitignore                   # Ignored files configuration
 ├── css/
@@ -77,7 +76,7 @@ To test or run locally:
 
 ```bash
 # Using Node (starts server on port 3000, 5500, and 8080)
-npm start
+node server.js
 
 # Or using npx serve
 npx serve .
