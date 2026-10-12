@@ -17,3 +17,7 @@ node_modules/
 # Logs
 *.log
 
+# Temp
+.edge_tmp/
+screen*.png
+

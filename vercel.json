@@ -6,6 +6,10 @@
   "cleanUrls": false,
   "rewrites": [
     {
+      "source": "/api/sambad/(.*)",
+      "destination": "https://sambad.tv/wp-json/lottery-sambad/v1/$1"
+    },
+    {
       "source": "/admin",
       "destination": "/admin.html"
     },

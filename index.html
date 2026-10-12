@@ -132,18 +132,53 @@
       <div class="mesh-blob orb-red-2"></div>
     </div>
 
+    <!-- ==============================================
+         DEVICE PREVIEW SIMULATOR TOOLBAR (Mobile / Desktop Switcher)
+         Allows instant testing on laptop/desktop between Mobile & Full View
+         ============================================== -->
+    <header class="device-simulator-toolbar" id="deviceSimulatorBar" aria-label="Device Viewport Switcher">
+      <div class="sim-inner">
+        <div class="sim-brand-col">
+          <span class="sim-pulse-dot" aria-hidden="true"></span>
+          <span class="sim-label">Screen Simulator:</span>
+        </div>
+        <div class="sim-tabs-group" role="tablist" aria-label="Select device preview size">
+          <button type="button" class="sim-tab-btn active" id="simBtnMobile" data-mode="mobile" role="tab" aria-selected="true" title="Standard Mobile Phone View (390px)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="3"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            <span>📱 Mobile (390px)</span>
+          </button>
+          <button type="button" class="sim-tab-btn" id="simBtnMobileLg" data-mode="mobile-lg" role="tab" aria-selected="false" title="Large Mobile Phone View (430px)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="2" width="16" height="20" rx="3"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            <span>📱 Large Phone (430px)</span>
+          </button>
+          <button type="button" class="sim-tab-btn" id="simBtnDesktop" data-mode="desktop" role="tab" aria-selected="false" title="Standard Laptop / Desktop Full View">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <span>💻 Desktop (Full)</span>
+          </button>
+        </div>
+        <div class="sim-meta-col">
+          <span class="sim-status-badge" id="simStatusBadge">390px Viewport • iPhone / Android Mode</span>
+        </div>
+      </div>
+    </header>
+
     <div class="app-container">
+      <!-- Phone Frame Top Island / Speaker (Visible in Mobile Simulator Mode) -->
+      <div class="phone-frame-notch" aria-hidden="true">
+        <span class="notch-sensor"></span>
+        <span class="notch-camera"></span>
+      </div>
       
       <!-- ==============================================
            SITE HEADER
            ============================================== -->
       <header class="site-header" role="banner">
         <div class="top-nav">
-          <div class="brand-wrap">
-            <!-- Three-Dots More Menu (⋮) -->
+          <!-- Left: Vertical Stack of Three-Dots (Top) and Refresh (Bottom) -->
+          <div class="header-left-tools">
             <div class="header-menu-wrap brand-menu-wrap">
               <button type="button" class="action-icon-btn menu-dots-btn" id="btnMenuDots" title="More Options" aria-label="Menu" aria-expanded="false">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
                   <circle cx="12" cy="5" r="2.2"></circle>
                   <circle cx="12" cy="12" r="2.2"></circle>
                   <circle cx="12" cy="19" r="2.2"></circle>
@@ -175,36 +210,35 @@
               </div>
             </div>
 
-            <div class="brand-icon-box" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-                <circle cx="12" cy="12" r="2.5"></circle>
-                <path d="M6 6v2M6 16v2M18 6v2M18 16v2"></path>
-              </svg>
-            </div>
-            <div class="brand-info">
-              <h1 class="site-title">Lottery Result Today</h1>
-              <span class="site-subtitle" id="headerDate">Official Daily Results &bull; 1 PM | 6 PM | 8 PM</span>
-            </div>
-          </div>
-
-          <div class="header-actions">
-            <!-- Active Status (Private - No external source leaks) -->
-            <div class="live-badge" title="Live system active">
-              <span class="live-dot" aria-hidden="true"></span>
-              <span id="apiStatusText">Active Now</span>
-            </div>
-
-            <!-- Live Refresh Button (Compact) -->
+            <!-- Refresh Button (Placed directly BELOW Three-Dots) -->
             <button type="button" class="action-icon-btn refresh-btn-compact" id="btnRefreshApi" title="Refresh Live Results" aria-label="Refresh">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="23 4 23 10 17 10"></polyline>
                 <polyline points="1 20 1 14 7 14"></polyline>
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
               </svg>
             </button>
+          </div>
 
-            <!-- Dark / Light Theme Toggle (Compact) -->
+          <!-- Center-Left: Logo + Site Title (Always in 1 Single Line) -->
+          <div class="brand-wrap">
+            <div class="brand-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                <circle cx="12" cy="12" r="2.5"></circle>
+                <path d="M6 6v2M6 16v2M18 6v2M18 16v2"></path>
+              </svg>
+            </div>
+            <h1 class="site-title">Lottery Result Today</h1>
+          </div>
+
+          <!-- Right: Active Now Badge & Dark/Light Theme Toggle -->
+          <div class="header-actions">
+            <div class="live-badge" title="Live system active">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span id="apiStatusText">ACTIVE NOW</span>
+            </div>
+
             <button type="button" class="action-icon-btn theme-toggle-btn theme-btn-compact" id="themeToggleBtn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="5"></circle>
@@ -218,19 +252,10 @@
                 <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
               </svg>
             </button>
-
-            <!-- Header Quick Jump to Previous Day (Compact) -->
-            <button type="button" class="header-prev-btn header-prev-btn-compact" id="btnHeaderPreviousResults" title="Jump to Previous Day Results" aria-label="Previous Results">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M12 8v4l3 3"></path>
-                <circle cx="12" cy="12" r="9"></circle>
-              </svg>
-              <span>Prev Results</span>
-            </button>
           </div>
         </div>
 
-        <!-- Date Strip & Day Segment Switcher (Compact) -->
+        <!-- Date Strip & Day Segment Switcher (Single Line Fit on Mobile) -->
         <div class="date-strip-bar">
           <div class="current-datetime">
             <span>Clock: <strong id="liveTimeClock">--:--:-- IST</strong></span>
@@ -250,7 +275,7 @@
             <!-- Custom Date Lookup Input -->
             <div class="custom-date-picker-wrap">
               <label for="dateLookupInput" class="custom-date-label" title="Search results by date">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 <span>By Date:</span>
               </label>
               <input type="date" id="dateLookupInput" class="custom-date-input" title="Choose date for Dear Lottery results" />
@@ -349,19 +374,6 @@
               <input type="date" id="nativeDateHeroInput" class="target-native-date-hidden" />
             </div>
 
-            <!-- Authentic Scanned Sheet & Bulletin Toggle -->
-            <div class="target-view-toggle" id="bulletinViewToggle">
-              <button type="button" class="view-toggle-tab active" data-view="sheet" id="btnToggleSheet" title="View Official Result Sheet Image">
-                <span>🖼️ Result Image</span>
-              </button>
-              <button type="button" class="view-toggle-tab" data-view="embed" id="btnToggleEmbed" title="View Official Live Embed">
-                <span>⚡ Live Embed</span>
-              </button>
-              <button type="button" class="view-toggle-tab" data-view="bulletin" id="btnToggleBulletin" title="View Digital Bulletin">
-                <span>📋 Bulletin</span>
-              </button>
-            </div>
-
           </div>
         </section>
 
@@ -388,27 +400,29 @@
              Always displays all 3 draws (1 PM, 6 PM, 8 PM) from yesterday
              ============================================== -->
         <section class="yesterday-results-section" id="yesterdaySection" aria-label="Yesterday's Lottery Results">
-          <div class="yesterday-header">
-            <div class="yesterday-badge">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-              <span>HISTORICAL ARCHIVE</span>
+          <!-- Prominent Clean Highlight Banner -->
+          <div class="yesterday-highlight-banner">
+            <h2 class="yesterday-main-heading" id="yesterdaySectionTitle">
+              Previous Day Results
+            </h2>
+            <div class="yesterday-sub-highlight">
+              <span class="yesterday-sub-bn">গতকালের ফলাফল</span>
+              <span class="yesterday-date-pill" id="yesterdayDatePill">📅 11/10/2026</span>
             </div>
-            <h2 class="yesterday-title" id="yesterdaySectionTitle">Previous Day Results</h2>
-            <p class="yesterday-subtitle">All <strong>3 complete official gazette bulletins</strong> from yesterday (1 PM, 6 PM, and 8 PM) are displayed below for immediate verification:</p>
             
             <!-- Quick Filter Tabs: All 3 Draws | 1 PM | 6 PM | 8 PM -->
             <div class="yesterday-filter-tabs" role="tablist" aria-label="Filter yesterday draws">
               <button type="button" class="yest-filter-btn active" data-slot="all">
-                <span>⭐ All 3 Draws (Show All)</span>
+                <span>⭐ All 3 Draws (সব ৩টি ড্র)</span>
               </button>
               <button type="button" class="yest-filter-btn" data-slot="1pm">
-                <span>🔴 1 PM Draw</span>
+                <span>🔴 1 PM (11/10)</span>
               </button>
               <button type="button" class="yest-filter-btn" data-slot="6pm">
-                <span>🟡 6 PM Draw</span>
+                <span>🟡 6 PM (11/10)</span>
               </button>
               <button type="button" class="yest-filter-btn" data-slot="8pm">
-                <span>🟢 8 PM Draw</span>
+                <span>🟢 8 PM (11/10)</span>
               </button>
             </div>
           </div>
@@ -417,196 +431,6 @@
           <div class="yesterday-sheets-container" id="yesterdaySheetsContainer">
             <!-- Populated dynamically by app.js with Yesterday's 1 PM, 6 PM, 8 PM sheets -->
           </div>
-        <!-- ==============================================
-             SEO CONTENT SECTION: SCHEDULE, PRIZE CHART & FAQ
-             Optimized for: Lottery Sambad, Dear Lottery Result Today, 1 PM, 6 PM, 8 PM
-             ============================================== -->
-        <section class="seo-content-section" aria-label="Lottery Sambad Information, Charts and FAQ">
-          
-          <!-- Section 1: Draw Timings & Daily Schedule Chart -->
-          <div class="seo-card">
-            <h2 class="seo-card-title">
-              <span class="seo-icon">🕒</span>
-              <span>Lottery Sambad Today Draw Schedule (1 PM, 6 PM, 8 PM)</span>
-            </h2>
-            <p class="seo-text">
-              The Directorate of Nagaland State Lotteries conducts official <strong>Dear Lottery Sambad</strong> draws thrice every day. Today's official winning numbers and scanned gazette bulletins are released live across three daily sessions:
-            </p>
-            
-            <div class="seo-schedule-grid">
-              <div class="seo-schedule-item item-morning">
-                <div class="seo-schedule-badge">1:00 PM</div>
-                <h3 class="seo-schedule-name">Dear Morning Draw</h3>
-                <div class="seo-schedule-prize">1st Prize ₹ 1 Crore</div>
-                <div class="seo-schedule-scheme">DEAR NARMADA / SOLAR / GODAVARI</div>
-                <span class="seo-schedule-tag">Nagaland State Lotteries</span>
-              </div>
-              <div class="seo-schedule-item item-day">
-                <div class="seo-schedule-badge">6:00 PM</div>
-                <h3 class="seo-schedule-name">Dear Day / Evening Draw</h3>
-                <div class="seo-schedule-prize">1st Prize ₹ 1 Crore</div>
-                <div class="seo-schedule-scheme">DEAR RIVER / WAVE / SUN / SAND</div>
-                <span class="seo-schedule-tag">Nagaland State Lotteries</span>
-              </div>
-              <div class="seo-schedule-item item-night">
-                <div class="seo-schedule-badge">8:00 PM</div>
-                <h3 class="seo-schedule-name">Dear Night Draw</h3>
-                <div class="seo-schedule-prize">1st Prize ₹ 1 Crore</div>
-                <div class="seo-schedule-scheme">DEAR FAME / TOUCAN / DESTINY</div>
-                <span class="seo-schedule-tag">Nagaland State Lotteries</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section 2: Prize Breakdown Chart -->
-          <div class="seo-card">
-            <h2 class="seo-card-title">
-              <span class="seo-icon">🏆</span>
-              <span>Dear Lottery Sambad Prize Amount &amp; Winner Chart</span>
-            </h2>
-            <p class="seo-text">
-              The official prize structure for Nagaland State Dear Lottery draws is structured across 5 distinct prize tiers plus consolation amounts:
-            </p>
-            <div class="seo-table-responsive">
-              <table class="seo-prize-table">
-                <thead>
-                  <tr>
-                    <th>Prize Tier</th>
-                    <th>Winner Prize</th>
-                    <th>Seller Incentive</th>
-                    <th>Qualifying Series</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="highlight-row">
-                    <td><strong>1st Prize</strong></td>
-                    <td class="prize-gold"><strong>₹ 1,00,00,000 (1 Crore)</strong></td>
-                    <td>₹ 5,00,000</td>
-                    <td>1 Lucky Ticket Number</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Consolation Prize</strong></td>
-                    <td>₹ 1,000</td>
-                    <td>₹ 500</td>
-                    <td>Remaining Series of 1st Prize</td>
-                  </tr>
-                  <tr>
-                    <td><strong>2nd Prize</strong></td>
-                    <td>₹ 10,000</td>
-                    <td>₹ 500</td>
-                    <td>10 Winning Numbers</td>
-                  </tr>
-                  <tr>
-                    <td><strong>3rd Prize</strong></td>
-                    <td>₹ 500</td>
-                    <td>₹ 50</td>
-                    <td>10 Winning Numbers</td>
-                  </tr>
-                  <tr>
-                    <td><strong>4th Prize</strong></td>
-                    <td>₹ 250</td>
-                    <td>₹ 20</td>
-                    <td>10 Winning Numbers</td>
-                  </tr>
-                  <tr>
-                    <td><strong>5th Prize</strong></td>
-                    <td>₹ 120</td>
-                    <td>₹ 10</td>
-                    <td>100 Winning Numbers</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Section 3: Frequently Asked Questions (FAQ) with Schema Alignment -->
-          <div class="seo-card" id="seoFaqSection">
-            <h2 class="seo-card-title">
-              <span class="seo-icon">❓</span>
-              <span>Frequently Asked Questions — Lottery Sambad &amp; Dear Lottery</span>
-            </h2>
-
-            <div class="seo-faq-list">
-              <details class="seo-faq-item" open>
-                <summary class="seo-faq-question">
-                  <span>When is the Lottery Sambad result declared today?</span>
-                  <span class="faq-chevron" aria-hidden="true">▾</span>
-                </summary>
-                <div class="seo-faq-answer">
-                  <p>Today's <strong>Lottery Sambad Result</strong> is declared three times daily: <strong>1:00 PM</strong> (Dear Morning Draw), <strong>6:00 PM</strong> (Dear Day Draw), and <strong>8:00 PM</strong> (Dear Night Draw). Official gazette sheets and winning numbers are published live immediately after each official government draw.</p>
-                </div>
-              </details>
-
-              <details class="seo-faq-item">
-                <summary class="seo-faq-question">
-                  <span>How can I check today's 1st Prize winning ticket number?</span>
-                  <span class="faq-chevron" aria-hidden="true">▾</span>
-                </summary>
-                <div class="seo-faq-answer">
-                  <p>You can check today's 1st Prize ₹ 1 Crore winning number directly at the top of our website. Select <strong>1 PM</strong>, <strong>6 PM</strong>, or <strong>8 PM</strong> button, or enter your ticket number in our <strong>Quick Ticket Number Checker</strong> for instant verification.</p>
-                </div>
-              </details>
-
-              <details class="seo-faq-item">
-                <summary class="seo-faq-question">
-                  <span>Where can I download the official Lottery Sambad PDF Result?</span>
-                  <span class="faq-chevron" aria-hidden="true">▾</span>
-                </summary>
-                <div class="seo-faq-answer">
-                  <p>Click on the <strong>PDF</strong> button or <strong>Download Image</strong> button located directly under any draw result to view and save the official high-resolution government gazette result sheet.</p>
-                </div>
-              </details>
-
-              <details class="seo-faq-item">
-                <summary class="seo-faq-question">
-                  <span>How do I check Lottery Sambad old results and yesterday's draws?</span>
-                  <span class="faq-chevron" aria-hidden="true">▾</span>
-                </summary>
-                <div class="seo-faq-answer">
-                  <p>Scroll to the <strong>Previous Day Results</strong> section to view complete gazette sheets for yesterday's 1 PM, 6 PM, and 8 PM draws. You can also use the <strong>By Date</strong> calendar picker in the top bar to inspect historical results for any selected date.</p>
-                </div>
-              </details>
-            </div>
-          </div>
-
-          <!-- Section 4: High Intent Search Tags Cloud -->
-          <div class="seo-card seo-tags-card">
-            <h3 class="seo-tags-heading">Popular Search Queries</h3>
-            <div class="seo-tags-cloud">
-              <span class="seo-tag-pill">Lottery Sambad</span>
-              <span class="seo-tag-pill">Lottery Result</span>
-              <span class="seo-tag-pill">Lottery Sambad Today</span>
-              <span class="seo-tag-pill">Lottery Result Today</span>
-              <span class="seo-tag-pill">Lottery Sambad Result Today</span>
-              <span class="seo-tag-pill">Today Lottery Result</span>
-              <span class="seo-tag-pill">Dear Lottery Result Today</span>
-              <span class="seo-tag-pill">Lottery Sambad 1 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 1 PM Result Today</span>
-              <span class="seo-tag-pill">Lottery Result 1 PM Today</span>
-              <span class="seo-tag-pill">Dear Lottery 1 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 1 PM</span>
-              <span class="seo-tag-pill">Lottery Sambad 6 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 6 PM Result Today</span>
-              <span class="seo-tag-pill">Lottery Result 6 PM Today</span>
-              <span class="seo-tag-pill">Dear Lottery 6 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 6 PM</span>
-              <span class="seo-tag-pill">Lottery Sambad 8 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 8 PM Result Today</span>
-              <span class="seo-tag-pill">Lottery Result 8 PM Today</span>
-              <span class="seo-tag-pill">Dear Lottery 8 PM Result</span>
-              <span class="seo-tag-pill">Lottery Sambad 8 PM</span>
-              <span class="seo-tag-pill">Lottery Sambad Today Result 1 PM 6 PM 8 PM</span>
-              <span class="seo-tag-pill">Lottery Sambad Live Result</span>
-              <span class="seo-tag-pill">Lottery Sambad Old Result</span>
-              <span class="seo-tag-pill">Lottery Sambad Old Results</span>
-              <span class="seo-tag-pill">Lottery Sambad Result Chart</span>
-              <span class="seo-tag-pill">Lottery Sambad PDF Result</span>
-              <span class="seo-tag-pill">Lottery Sambad Today PDF</span>
-              <span class="seo-tag-pill">Nagaland State Lottery Result Today</span>
-              <span class="seo-tag-pill">Dhankesari Lottery Sambad</span>
-            </div>
-          </div>
-
         </section>
 
       </main>
