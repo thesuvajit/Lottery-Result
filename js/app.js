@@ -2697,61 +2697,13 @@
     }, 2800);
   }
 
-  // ==========================================
-  // 8B. DEVICE VIEWPORT SIMULATOR (Mobile / Desktop Tester)
-  // ==========================================
-  function initDeviceSimulator() {
-    const btnMobile = document.getElementById("simBtnMobile");
-    const btnMobileLg = document.getElementById("simBtnMobileLg");
-    const btnDesktop = document.getElementById("simBtnDesktop");
-    const statusBadge = document.getElementById("simStatusBadge");
-
-    if (!btnMobile || !btnDesktop) return;
-
-    function setPreviewMode(mode) {
-      document.body.classList.remove("device-mode-mobile", "device-mode-mobile-lg", "device-mode-desktop");
-      
-      if (mode === "mobile") {
-        document.body.classList.add("device-mode-mobile");
-        if (statusBadge) statusBadge.textContent = "390px Viewport • iPhone / Android Mode";
-      } else if (mode === "mobile-lg") {
-        document.body.classList.add("device-mode-mobile-lg");
-        if (statusBadge) statusBadge.textContent = "430px Viewport • Large Phone Mode";
-      } else {
-        document.body.classList.add("device-mode-desktop");
-        if (statusBadge) statusBadge.textContent = "Full View • Desktop Laptop Mode";
-      }
-
-      if (btnMobile) btnMobile.classList.toggle("active", mode === "mobile");
-      if (btnMobileLg) btnMobileLg.classList.toggle("active", mode === "mobile-lg");
-      if (btnDesktop) btnDesktop.classList.toggle("active", mode === "desktop");
-
-      localStorage.setItem("lottery_preview_mode", mode);
-    }
-
-    btnMobile.addEventListener("click", () => {
-      setPreviewMode("mobile");
-      showToast("📱 Switched to 390px Mobile screen view");
-    });
-
-    if (btnMobileLg) {
-      btnMobileLg.addEventListener("click", () => {
-        setPreviewMode("mobile-lg");
-        showToast("📱 Switched to 430px Large Mobile view");
-      });
-    }
-
-    btnDesktop.addEventListener("click", () => {
-      setPreviewMode("desktop");
-      showToast("💻 Switched to Full Desktop view");
-    });
-
-    // Default to mobile mode on desktop/laptop screens unless saved otherwise
-    const savedMode = localStorage.getItem("lottery_preview_mode") || "mobile";
-    setPreviewMode(savedMode);
+  // Ensure legacy simulator classes or stored keys are cleaned up
+  try {
+    document.body.classList.remove("device-mode-mobile", "device-mode-mobile-lg", "device-mode-desktop");
+    localStorage.removeItem("lottery_preview_mode");
+  } catch (e) {
+    // Ignore storage errors if disabled
   }
-
-  initDeviceSimulator();
 
   // ==========================================
   // 9. INITIAL LAUNCH & POLLING
