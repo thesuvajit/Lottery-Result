@@ -314,24 +314,25 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
-  gap: 6px;
+  padding: 7px 12px;
+  gap: 8px;
 }
 
 /* Left Stack: Three-dots on top, Refresh directly below */
 .header-left-tools {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-left: 2px;
 }
 
 .header-left-tools .action-icon-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border-radius: 6px;
   padding: 0;
   display: flex;
   align-items: center;
@@ -346,9 +347,10 @@ button {
 .brand-wrap {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   flex: 1;
   min-width: 0;
+  margin-left: 4px;
 }
 
 .brand-menu-wrap {
@@ -445,9 +447,9 @@ button {
 }
 
 .brand-icon-box {
-  width: 25px;
-  height: 25px;
-  border-radius: 6px;
+  width: 27px;
+  height: 27px;
+  border-radius: 7px;
   background: linear-gradient(135deg, #e11d48 0%, #f59e0b 50%, #10b981 100%);
   display: flex;
   align-items: center;
@@ -458,16 +460,16 @@ button {
 }
 
 .brand-icon-box svg {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 /* Site Title: Always on 1 single line next to logo on mobile without truncation */
 .site-title {
   font-family: var(--font-heading);
-  font-size: clamp(0.74rem, 3.2vw, 1.05rem);
+  font-size: clamp(0.88rem, 3.8vw, 1.15rem);
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   line-height: 1.2;
   white-space: nowrap;
