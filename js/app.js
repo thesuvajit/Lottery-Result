@@ -2398,35 +2398,7 @@
         </div>
 
         <div class="sambad-sheet-img-wrap" id="scannedSheetWrapper" title="Pinch or double-tap to zoom">
-          <!-- Floating Interactive Zoom Toolbar -->
-          <div class="sheet-zoom-toolbar" role="toolbar" aria-label="Sheet zoom controls">
-            <button type="button" class="sheet-zoom-btn btn-zoom-in" title="Zoom in (+)" aria-label="Zoom in">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <button type="button" class="sheet-zoom-btn btn-zoom-out" title="Zoom out (-)" aria-label="Zoom out">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <button type="button" class="sheet-zoom-btn btn-zoom-reset" title="Reset zoom (1x)" aria-label="Reset zoom">
-              <span>1x</span>
-            </button>
-            <button type="button" class="sheet-zoom-btn btn-zoom-fullscreen" title="Open full resolution in lightbox" aria-label="Fullscreen">
-              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-            </button>
-          </div>
-
-          <!-- Dynamic Zoom Status Pill -->
-          <div class="sheet-zoom-indicator">
-            <span class="zoom-level-text">1.0x</span>
-            <span class="zoom-pan-hint">&bull; Drag to pan</span>
-            <button type="button" class="zoom-quick-reset" title="Reset to original size">Reset</button>
-          </div>
-
           <img src="${sheetUrl}" alt="Official ${slot.label} Dear Lottery Scanned Result Sheet" class="sambad-sheet-img" id="scannedSheetImg" loading="eager" onerror="handleSheetImgError(this)" />
-          
-          <div class="scanned-sheet-zoom-overlay">
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            <span>Pinch / Double-Tap to Zoom</span>
-          </div>
         </div>
 
         <!-- Sheet Actions Bar -->
@@ -2596,14 +2568,6 @@
       attachInteractivePanZoom(wrapper, img, {
         onFullscreen: () => openLightbox(imgUrl)
       });
-
-      const overlay = wrapper.querySelector(".scanned-sheet-zoom-overlay");
-      if (overlay) {
-        overlay.addEventListener("click", (e) => {
-          e.stopPropagation();
-          openLightbox(imgUrl);
-        });
-      }
     }
   }
 
@@ -2707,36 +2671,7 @@
               </div>
               
               <div class="sambad-sheet-img-wrap yest-sheet-click" data-img="${sheetUrl}" id="yest_wrap_${item.slot.slot}" style="position:relative;" title="Pinch or double-tap to zoom">
-                <span class="yest-sheet-overlay-badge">📜 Previous Day Sheet &bull; ${item.slot.label} (${getSlashDate(item.result.apiDate)})</span>
-
-                <!-- Floating Interactive Zoom Toolbar -->
-                <div class="sheet-zoom-toolbar" role="toolbar" aria-label="Sheet zoom controls">
-                  <button type="button" class="sheet-zoom-btn btn-zoom-in" title="Zoom in (+)" aria-label="Zoom in">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                  </button>
-                  <button type="button" class="sheet-zoom-btn btn-zoom-out" title="Zoom out (-)" aria-label="Zoom out">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                  </button>
-                  <button type="button" class="sheet-zoom-btn btn-zoom-reset" title="Reset zoom (1x)" aria-label="Reset zoom">
-                    <span>1x</span>
-                  </button>
-                  <button type="button" class="sheet-zoom-btn btn-zoom-fullscreen" title="Open full resolution in lightbox" aria-label="Fullscreen">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                  </button>
-                </div>
-
-                <!-- Dynamic Zoom Status Pill -->
-                <div class="sheet-zoom-indicator">
-                  <span class="zoom-level-text">1.0x</span>
-                  <span class="zoom-pan-hint">&bull; Drag to pan</span>
-                  <button type="button" class="zoom-quick-reset" title="Reset to original size">Reset</button>
-                </div>
-
                 <img src="${sheetUrl}" alt="Official ${item.slot.label} Yesterday Scanned Gazette Sheet" class="sambad-sheet-img" loading="lazy" onerror="handleSheetImgError(this)" />
-                <div class="scanned-sheet-zoom-overlay">
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                  <span>Pinch / Double-Tap to Zoom</span>
-                </div>
               </div>
 
               <div class="card-actions-row" style="padding: 10px 16px 14px; background: rgba(0,0,0,0.18);">
@@ -2771,13 +2706,6 @@
             attachInteractivePanZoom(wrap, img, {
               onFullscreen: () => { if (src) openLightbox(src); }
             });
-            const overlay = wrap.querySelector(".scanned-sheet-zoom-overlay");
-            if (overlay) {
-              overlay.addEventListener("click", (e) => {
-                e.stopPropagation();
-                if (src) openLightbox(src);
-              });
-            }
           }
         });
       }

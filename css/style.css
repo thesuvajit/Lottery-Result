@@ -1781,49 +1781,10 @@ button {
   font-weight: 700;
 }
 
-/* Floating Quick Jump Dock (Compact & Unobtrusive) */
-.floating-quick-dock {
-  position: fixed;
-  bottom: 18px;
-  right: 14px;
-  z-index: 85;
-}
-
+/* Floating Quick Jump Dock (Removed per user request) */
+.floating-quick-dock,
 .floating-prev-jump-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(37, 99, 235, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  padding: 5px 11px;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  font-size: 0.72rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  opacity: 0.88;
-  transition: all var(--transition-fast);
-}
-
-.floating-prev-jump-btn:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-  background: rgba(37, 99, 235, 0.98);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.5);
-}
-
-@media (max-width: 600px) {
-  .floating-quick-dock {
-    bottom: 14px;
-    right: 10px;
-  }
-  .floating-prev-jump-btn {
-    padding: 4px 9px;
-    font-size: 0.68rem;
-    gap: 4px;
-  }
+  display: none !important;
 }
 
 /* Toast */
@@ -2035,134 +1996,13 @@ button {
   }
 }
 
-/* Floating Interactive Zoom Toolbar */
-.sheet-zoom-toolbar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 25;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 4px 6px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.sheet-zoom-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.12);
-  color: #ffffff;
-  border: 0;
-  cursor: pointer;
-  font-size: 0.76rem;
-  font-weight: 800;
-  transition: background 0.15s ease, transform 0.15s ease;
-  padding: 0;
-}
-
-.sheet-zoom-btn:hover {
-  background: rgba(37, 99, 235, 0.9);
-  transform: scale(1.08);
-}
-
-.sheet-zoom-btn:active {
-  transform: scale(0.92);
-}
-
-/* Dynamic Zoom Status Pill */
-.sheet-zoom-indicator {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  z-index: 25;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #ffffff;
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  border: 1px solid rgba(59, 130, 246, 0.45);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.sheet-zoom-indicator.show {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-
-.zoom-level-text {
-  color: #60a5fa;
-  font-weight: 800;
-}
-
-.zoom-pan-hint {
-  color: #94a3b8;
-  font-size: 0.7rem;
-}
-
-.zoom-quick-reset {
-  background: #ef4444;
-  color: #ffffff;
-  border: 0;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  font-size: 0.68rem;
-  font-weight: 800;
-  cursor: pointer;
-  margin-left: 2px;
-  transition: background 0.15s ease;
-}
-
-.zoom-quick-reset:hover {
-  background: #dc2626;
-}
-
-.scanned-sheet-zoom-overlay {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: #ffffff;
-  padding: 6px 13px;
-  border-radius: var(--radius-full);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-  transition: opacity 0.2s ease;
-  z-index: 20;
-  cursor: pointer;
-}
-
-.sambad-sheet-img-wrap.is-zoomed .scanned-sheet-zoom-overlay {
-  opacity: 0;
-  pointer-events: none;
+/* Sheet Zoom Toolbars & Overlays (Hidden - Touch & Pinch Zoom remain active on the clean image) */
+.sheet-zoom-toolbar,
+.sheet-zoom-btn,
+.sheet-zoom-indicator,
+.scanned-sheet-zoom-overlay,
+.yest-sheet-overlay-badge {
+  display: none !important;
 }
 
 /* Sambad.tv Official HTML Iframe Embed Wrapper */
