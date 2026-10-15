@@ -1,8 +1,22 @@
-# Robots.txt for Lottery Result Today
+# Robots.txt for Lottery Sambad Today Result (todaylotteryresult.vercel.app)
 User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /admin
 
-# Sitemap location
+# Google & Major Search Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /assets/
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# XML Sitemap
 Sitemap: https://todaylotteryresult.vercel.app/sitemap.xml
