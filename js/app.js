@@ -2065,6 +2065,317 @@
   }
 
   /**
+   * Ultra-smooth, hardware-accelerated Pan & Pinch-to-Zoom Controller
+   * Prevents browser viewport shaking, sticky-header jitter, and lighting/flickering.
+   */
+  function attachInteractivePanZoom(wrapper, img, options) {
+    if (!wrapper || !img) return null;
+    options = options || {};
+
+    if (wrapper._panZoomController) {
+      try { wrapper._panZoomController.destroy(); } catch (e) {}
+    }
+
+    let scale = 1;
+    let panX = 0;
+    let panY = 0;
+    const minScale = 1;
+    const maxScale = options.maxScale || 4.5;
+
+    let isPinching = false;
+    let isPanning = false;
+    let startDist = 0;
+    let startScale = 1;
+    let startPanX = 0;
+    let startPanY = 0;
+    let startMidX = 0;
+    let startMidY = 0;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    let lastTapTime = 0;
+    let isMouseDragging = false;
+    let mouseStartX = 0;
+    let mouseStartY = 0;
+
+    const indicator = wrapper.querySelector(".sheet-zoom-indicator");
+    const levelText = wrapper.querySelector(".zoom-level-text");
+    const overlay = wrapper.querySelector(".scanned-sheet-zoom-overlay");
+
+    function updateTransform(smooth) {
+      if (smooth) {
+        img.classList.add("animate-zoom");
+      } else {
+        img.classList.remove("animate-zoom");
+      }
+
+      img.style.transform = `translate3d(${panX.toFixed(1)}px, ${panY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+
+      if (scale > 1.02) {
+        wrapper.classList.add("is-zoomed");
+        if (indicator) {
+          indicator.classList.add("show");
+          if (levelText) levelText.textContent = `${scale.toFixed(1)}x`;
+        }
+        if (overlay) overlay.style.opacity = "0";
+      } else {
+        wrapper.classList.remove("is-zoomed", "is-panning");
+        if (indicator) indicator.classList.remove("show");
+        if (overlay) overlay.style.opacity = "";
+      }
+    }
+
+    function clampPan() {
+      if (scale <= 1) {
+        panX = 0;
+        panY = 0;
+        return;
+      }
+      const rect = wrapper.getBoundingClientRect();
+      const maxX = Math.max(0, (rect.width * scale - rect.width) / 2);
+      const maxY = Math.max(0, (rect.height * scale - rect.height) / 2);
+
+      panX = Math.min(maxX, Math.max(-maxX, panX));
+      panY = Math.min(maxY, Math.max(-maxY, panY));
+    }
+
+    function setZoom(newScale, targetX, targetY, smooth) {
+      smooth = smooth !== false;
+      const clampedScale = Math.min(maxScale, Math.max(minScale, newScale));
+      if (clampedScale <= 1.01) {
+        scale = 1;
+        panX = 0;
+        panY = 0;
+      } else {
+        if (typeof targetX === "number" && typeof targetY === "number") {
+          const rect = wrapper.getBoundingClientRect();
+          const originX = targetX - (rect.left + rect.width / 2);
+          const originY = targetY - (rect.top + rect.height / 2);
+          const ratio = clampedScale / scale;
+          panX = (panX - originX) * ratio + originX;
+          panY = (panY - originY) * ratio + originY;
+        }
+        scale = clampedScale;
+        clampPan();
+      }
+      updateTransform(smooth);
+    }
+
+    function resetZoom() {
+      scale = 1;
+      panX = 0;
+      panY = 0;
+      updateTransform(true);
+    }
+
+    function onDoubleTap(clientX, clientY) {
+      if (scale > 1.2) {
+        resetZoom();
+      } else {
+        setZoom(2.5, clientX, clientY, true);
+      }
+    }
+
+    // Touch Listeners
+    function onTouchStart(e) {
+      if (e.touches.length === 2) {
+        isPinching = true;
+        isPanning = false;
+        img.classList.remove("animate-zoom");
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        startDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        startScale = scale;
+        startPanX = panX;
+        startPanY = panY;
+        startMidX = (t1.clientX + t2.clientX) / 2;
+        startMidY = (t1.clientY + t2.clientY) / 2;
+        if (e.cancelable) e.preventDefault(); // Stop mobile browser page zoom
+      } else if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        const now = Date.now();
+        if (now - lastTapTime < 320) {
+          onDoubleTap(touch.clientX, touch.clientY);
+          lastTapTime = 0;
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
+        lastTapTime = now;
+
+        if (scale > 1.02) {
+          isPanning = true;
+          isPinching = false;
+          wrapper.classList.add("is-panning");
+          img.classList.remove("animate-zoom");
+          lastTouchX = touch.clientX;
+          lastTouchY = touch.clientY;
+          if (e.cancelable) e.preventDefault();
+        }
+      }
+    }
+
+    function onTouchMove(e) {
+      if (isPinching && e.touches.length === 2) {
+        if (e.cancelable) e.preventDefault();
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        if (startDist > 0) {
+          const factor = dist / startDist;
+          scale = Math.min(maxScale, Math.max(minScale, startScale * factor));
+          const midX = (t1.clientX + t2.clientX) / 2;
+          const midY = (t1.clientY + t2.clientY) / 2;
+          panX = startPanX + (midX - startMidX) * 0.7;
+          panY = startPanY + (midY - startMidY) * 0.7;
+          clampPan();
+          updateTransform(false);
+        }
+      } else if (isPanning && e.touches.length === 1 && scale > 1.02) {
+        if (e.cancelable) e.preventDefault();
+        const touch = e.touches[0];
+        const dx = touch.clientX - lastTouchX;
+        const dy = touch.clientY - lastTouchY;
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+        panX += dx;
+        panY += dy;
+        clampPan();
+        updateTransform(false);
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (isPinching && e.touches.length < 2) {
+        isPinching = false;
+        if (scale < 1.06) {
+          resetZoom();
+        } else {
+          clampPan();
+          updateTransform(true);
+        }
+      }
+      if (isPanning && e.touches.length === 0) {
+        isPanning = false;
+        wrapper.classList.remove("is-panning");
+        clampPan();
+        updateTransform(true);
+      }
+    }
+
+    // Mouse Drag Listeners
+    function onMouseDown(e) {
+      if (scale > 1.02 && e.button === 0) {
+        isMouseDragging = true;
+        mouseStartX = e.clientX;
+        mouseStartY = e.clientY;
+        wrapper.classList.add("is-panning");
+        img.classList.remove("animate-zoom");
+        e.preventDefault();
+      }
+    }
+
+    function onMouseMove(e) {
+      if (isMouseDragging && scale > 1.02) {
+        const dx = e.clientX - mouseStartX;
+        const dy = e.clientY - mouseStartY;
+        mouseStartX = e.clientX;
+        mouseStartY = e.clientY;
+        panX += dx;
+        panY += dy;
+        clampPan();
+        updateTransform(false);
+      }
+    }
+
+    function onMouseUp() {
+      if (isMouseDragging) {
+        isMouseDragging = false;
+        wrapper.classList.remove("is-panning");
+        clampPan();
+        updateTransform(true);
+      }
+    }
+
+    function onWheel(e) {
+      if (e.ctrlKey || scale > 1.02) {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 0.35 : -0.35;
+        setZoom(scale + delta, e.clientX, e.clientY, false);
+      }
+    }
+
+    // Wire Buttons
+    const btnIn = wrapper.querySelector(".btn-zoom-in");
+    const btnOut = wrapper.querySelector(".btn-zoom-out");
+    const btnReset = wrapper.querySelector(".btn-zoom-reset");
+    const btnQuickReset = wrapper.querySelector(".zoom-quick-reset");
+    const btnFullscreen = wrapper.querySelector(".btn-zoom-fullscreen");
+
+    function stopEvt(e) { e.stopPropagation(); }
+
+    if (btnIn) {
+      btnIn.addEventListener("click", (e) => {
+        stopEvt(e);
+        setZoom(scale + 0.6, undefined, undefined, true);
+      });
+    }
+    if (btnOut) {
+      btnOut.addEventListener("click", (e) => {
+        stopEvt(e);
+        setZoom(scale - 0.6, undefined, undefined, true);
+      });
+    }
+    if (btnReset) {
+      btnReset.addEventListener("click", (e) => {
+        stopEvt(e);
+        resetZoom();
+      });
+    }
+    if (btnQuickReset) {
+      btnQuickReset.addEventListener("click", (e) => {
+        stopEvt(e);
+        resetZoom();
+      });
+    }
+    if (btnFullscreen) {
+      btnFullscreen.addEventListener("click", (e) => {
+        stopEvt(e);
+        if (options.onFullscreen) options.onFullscreen();
+      });
+    }
+
+    wrapper.addEventListener("touchstart", onTouchStart, { passive: false });
+    wrapper.addEventListener("touchmove", onTouchMove, { passive: false });
+    wrapper.addEventListener("touchend", onTouchEnd);
+    wrapper.addEventListener("touchcancel", onTouchEnd);
+
+    wrapper.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    wrapper.addEventListener("wheel", onWheel, { passive: false });
+
+    const controller = {
+      getScale: () => scale,
+      isZoomed: () => scale > 1.02,
+      setZoom,
+      resetZoom,
+      destroy: () => {
+        wrapper.removeEventListener("touchstart", onTouchStart);
+        wrapper.removeEventListener("touchmove", onTouchMove);
+        wrapper.removeEventListener("touchend", onTouchEnd);
+        wrapper.removeEventListener("touchcancel", onTouchEnd);
+        wrapper.removeEventListener("mousedown", onMouseDown);
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+        wrapper.removeEventListener("wheel", onWheel);
+        wrapper._panZoomController = null;
+      }
+    };
+
+    wrapper._panZoomController = controller;
+    return controller;
+  }
+
+  /**
    * Generates Sambad.tv Scanned Result Sheet Presentation (Primary Image View)
    */
   function generateSambadSheetHTML(slot, result) {
@@ -2086,11 +2397,35 @@
           </div>
         </div>
 
-        <div class="sambad-sheet-img-wrap" id="scannedSheetWrapper" title="Click to view full resolution sheet in lightbox">
+        <div class="sambad-sheet-img-wrap" id="scannedSheetWrapper" title="Pinch or double-tap to zoom">
+          <!-- Floating Interactive Zoom Toolbar -->
+          <div class="sheet-zoom-toolbar" role="toolbar" aria-label="Sheet zoom controls">
+            <button type="button" class="sheet-zoom-btn btn-zoom-in" title="Zoom in (+)" aria-label="Zoom in">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <button type="button" class="sheet-zoom-btn btn-zoom-out" title="Zoom out (-)" aria-label="Zoom out">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <button type="button" class="sheet-zoom-btn btn-zoom-reset" title="Reset zoom (1x)" aria-label="Reset zoom">
+              <span>1x</span>
+            </button>
+            <button type="button" class="sheet-zoom-btn btn-zoom-fullscreen" title="Open full resolution in lightbox" aria-label="Fullscreen">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+          </div>
+
+          <!-- Dynamic Zoom Status Pill -->
+          <div class="sheet-zoom-indicator">
+            <span class="zoom-level-text">1.0x</span>
+            <span class="zoom-pan-hint">&bull; Drag to pan</span>
+            <button type="button" class="zoom-quick-reset" title="Reset to original size">Reset</button>
+          </div>
+
           <img src="${sheetUrl}" alt="Official ${slot.label} Dear Lottery Scanned Result Sheet" class="sambad-sheet-img" id="scannedSheetImg" loading="eager" onerror="handleSheetImgError(this)" />
+          
           <div class="scanned-sheet-zoom-overlay">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            <span>Tap to Enlarge Full Sheet</span>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <span>Pinch / Double-Tap to Zoom</span>
           </div>
         </div>
 
@@ -2256,10 +2591,19 @@
 
   function wireScannedSheetActions(imgUrl) {
     const wrapper = document.getElementById("scannedSheetWrapper");
-    if (wrapper) {
-      wrapper.addEventListener("click", () => {
-        openLightbox(imgUrl);
+    const img = document.getElementById("scannedSheetImg");
+    if (wrapper && img) {
+      attachInteractivePanZoom(wrapper, img, {
+        onFullscreen: () => openLightbox(imgUrl)
       });
+
+      const overlay = wrapper.querySelector(".scanned-sheet-zoom-overlay");
+      if (overlay) {
+        overlay.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openLightbox(imgUrl);
+        });
+      }
     }
   }
 
@@ -2362,12 +2706,36 @@
                 </div>
               </div>
               
-              <div class="sambad-sheet-img-wrap yest-sheet-click" data-img="${sheetUrl}" style="position:relative;" title="Tap to enlarge full resolution sheet">
+              <div class="sambad-sheet-img-wrap yest-sheet-click" data-img="${sheetUrl}" id="yest_wrap_${item.slot.slot}" style="position:relative;" title="Pinch or double-tap to zoom">
                 <span class="yest-sheet-overlay-badge">📜 Previous Day Sheet &bull; ${item.slot.label} (${getSlashDate(item.result.apiDate)})</span>
+
+                <!-- Floating Interactive Zoom Toolbar -->
+                <div class="sheet-zoom-toolbar" role="toolbar" aria-label="Sheet zoom controls">
+                  <button type="button" class="sheet-zoom-btn btn-zoom-in" title="Zoom in (+)" aria-label="Zoom in">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                  </button>
+                  <button type="button" class="sheet-zoom-btn btn-zoom-out" title="Zoom out (-)" aria-label="Zoom out">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                  </button>
+                  <button type="button" class="sheet-zoom-btn btn-zoom-reset" title="Reset zoom (1x)" aria-label="Reset zoom">
+                    <span>1x</span>
+                  </button>
+                  <button type="button" class="sheet-zoom-btn btn-zoom-fullscreen" title="Open full resolution in lightbox" aria-label="Fullscreen">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                  </button>
+                </div>
+
+                <!-- Dynamic Zoom Status Pill -->
+                <div class="sheet-zoom-indicator">
+                  <span class="zoom-level-text">1.0x</span>
+                  <span class="zoom-pan-hint">&bull; Drag to pan</span>
+                  <button type="button" class="zoom-quick-reset" title="Reset to original size">Reset</button>
+                </div>
+
                 <img src="${sheetUrl}" alt="Official ${item.slot.label} Yesterday Scanned Gazette Sheet" class="sambad-sheet-img" loading="lazy" onerror="handleSheetImgError(this)" />
                 <div class="scanned-sheet-zoom-overlay">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-                  <span>Tap to Enlarge Sheet</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                  <span>Pinch / Double-Tap to Zoom</span>
                 </div>
               </div>
 
@@ -2394,13 +2762,23 @@
         }
         filterYesterdaySheets();
 
-        // Wire yesterday lightbox clicks
-        const yestImgs = Array.from(yesterdaySheetsContainer.querySelectorAll(".yest-sheet-click"));
-        yestImgs.forEach(el => {
-          el.addEventListener("click", () => {
-            const src = el.getAttribute("data-img");
-            if (src) openLightbox(src);
-          });
+        // Wire yesterday cards with interactive pan-zoom & lightbox
+        const yestWrappers = Array.from(yesterdaySheetsContainer.querySelectorAll(".yest-sheet-click"));
+        yestWrappers.forEach(wrap => {
+          const src = wrap.getAttribute("data-img");
+          const img = wrap.querySelector("img.sambad-sheet-img");
+          if (img) {
+            attachInteractivePanZoom(wrap, img, {
+              onFullscreen: () => { if (src) openLightbox(src); }
+            });
+            const overlay = wrap.querySelector(".scanned-sheet-zoom-overlay");
+            if (overlay) {
+              overlay.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (src) openLightbox(src);
+              });
+            }
+          }
         });
       }
     };
@@ -2661,28 +3039,73 @@
 
   // Lightbox Modal
   const sheetModal = document.getElementById("sheetModal");
+  const modalImgWrapper = document.getElementById("modalImgWrapper");
   const modalImg = document.getElementById("modalImg");
   const modalCloseBtn = document.getElementById("modalCloseBtn");
+  const modalZoomInBtn = document.getElementById("modalZoomInBtn");
+  const modalZoomOutBtn = document.getElementById("modalZoomOutBtn");
+  const modalResetZoomBtn = document.getElementById("modalResetZoomBtn");
+
+  let modalPanZoomCtrl = null;
 
   function openLightbox(src) {
     if (!sheetModal || !modalImg) return;
     modalImg.src = src;
     sheetModal.classList.add("open");
     sheetModal.classList.add("active");
+    document.body.style.overflow = "hidden"; // Prevent background page scroll while inspecting
+
+    if (modalImgWrapper) {
+      modalPanZoomCtrl = attachInteractivePanZoom(modalImgWrapper, modalImg, {
+        maxScale: 6
+      });
+    }
   }
 
   function closeLightbox() {
     if (!sheetModal) return;
     sheetModal.classList.remove("open");
     sheetModal.classList.remove("active");
+    document.body.style.overflow = "";
+
+    if (modalPanZoomCtrl) {
+      try {
+        modalPanZoomCtrl.resetZoom();
+        modalPanZoomCtrl.destroy();
+      } catch (e) {}
+      modalPanZoomCtrl = null;
+    }
   }
 
   if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeLightbox);
-  if (sheetModal) {
-    sheetModal.addEventListener("click", (e) => {
-      if (e.target === sheetModal) closeLightbox();
+  if (modalZoomInBtn) {
+    modalZoomInBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (modalPanZoomCtrl) modalPanZoomCtrl.setZoom(modalPanZoomCtrl.getScale() + 0.6, undefined, undefined, true);
     });
   }
+  if (modalZoomOutBtn) {
+    modalZoomOutBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (modalPanZoomCtrl) modalPanZoomCtrl.setZoom(modalPanZoomCtrl.getScale() - 0.6, undefined, undefined, true);
+    });
+  }
+  if (modalResetZoomBtn) {
+    modalResetZoomBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (modalPanZoomCtrl) modalPanZoomCtrl.resetZoom();
+    });
+  }
+  if (sheetModal) {
+    sheetModal.addEventListener("click", (e) => {
+      if (e.target === sheetModal || e.target === modalImgWrapper) closeLightbox();
+    });
+  }
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sheetModal && sheetModal.classList.contains("open")) {
+      closeLightbox();
+    }
+  });
 
   // Toast System
   const toastElem = document.getElementById("toastNotification");
@@ -2721,13 +3144,28 @@
     renderActiveResult();
   });
 
-  // Background polling every 40s
+  // Background polling every 40s (Protected against interrupting active user zooming)
   setInterval(() => {
+    const activeWrap = document.getElementById("scannedSheetWrapper");
+    if (activeWrap && activeWrap._panZoomController && activeWrap._panZoomController.isZoomed()) {
+      return; // Do not interrupt user while inspecting numbers
+    }
+
     Promise.all([
       fetchSlotResult(0, todayISO, true),
       fetchSlotResult(1, todayISO, true),
       fetchSlotResult(2, todayISO, true)
     ]).then(() => {
+      // Check if rendered sheet image or winning number actually changed
+      const currentCacheKey = selectedDateISO + "_" + SLOTS[activeSlotIndex].slot;
+      const cached = slotCache[currentCacheKey];
+      const curImg = document.getElementById("scannedSheetImg");
+      if (cached && cached.data && curImg) {
+        const expected = cached.data.sheetImg;
+        if (expected && (curImg.src === expected || curImg.src.endsWith(expected))) {
+          return; // Skip DOM re-render if data has not changed
+        }
+      }
       renderActiveResult();
     });
   }, 40000);

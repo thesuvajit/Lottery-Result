@@ -124,147 +124,11 @@ body {
 }
 
 /* ==========================================================================
-   AMBIENT 3D ANIMATED LOTTERY BACKGROUND
-   Mixes authentic lottery colors: Yellow (হলুদ), Green (সবুজ) & Red (লাল)
-   Soft, vibrant, with fluid 3D floating movement and depth
+   CLEAN & CALM EYE-COMFORT BACKGROUND
+   Eliminates eye-straining colored glowing orbs and GPU compositing thrashing
    ========================================================================== */
 .ambient-lottery-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.mesh-blob {
-  position: absolute;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-  filter: blur(55px);
-  pointer-events: none;
-}
-
-/* 1. Yellow / Gold Glow 1 (Top Left) */
-.orb-yellow-1 {
-  top: -8%;
-  left: 5%;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, rgba(250, 204, 21, 0.28) 0%, rgba(234, 179, 8, 0.14) 45%, transparent 72%);
-  animation: orbFloat3D_1 18s ease-in-out infinite alternate;
-}
-
-/* 2. Emerald Green Glow 1 (Top Right) */
-.orb-green-1 {
-  top: 4%;
-  right: 2%;
-  width: 540px;
-  height: 540px;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.28) 0%, rgba(22, 163, 74, 0.14) 45%, transparent 72%);
-  animation: orbFloat3D_2 22s ease-in-out infinite alternate;
-}
-
-/* 3. Ruby Red Glow 1 (Mid Left / Center) */
-.orb-red-1 {
-  top: 38%;
-  left: -5%;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.26) 0%, rgba(220, 38, 38, 0.13) 45%, transparent 72%);
-  animation: orbFloat3D_3 20s ease-in-out infinite alternate;
-}
-
-/* 4. Yellow / Gold Glow 2 (Mid Right) */
-.orb-yellow-2 {
-  top: 45%;
-  right: -2%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(250, 204, 21, 0.26) 0%, rgba(234, 179, 8, 0.12) 45%, transparent 72%);
-  animation: orbFloat3D_4 24s ease-in-out infinite alternate;
-}
-
-/* 5. Emerald Green Glow 2 (Bottom Left) */
-.orb-green-2 {
-  bottom: -6%;
-  left: 10%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.27) 0%, rgba(22, 163, 74, 0.13) 45%, transparent 72%);
-  animation: orbFloat3D_5 21s ease-in-out infinite alternate;
-}
-
-/* 6. Ruby Red Glow 2 (Bottom Right) */
-.orb-red-2 {
-  bottom: -4%;
-  right: 8%;
-  width: 530px;
-  height: 530px;
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.27) 0%, rgba(220, 38, 38, 0.13) 45%, transparent 72%);
-  animation: orbFloat3D_6 26s ease-in-out infinite alternate;
-}
-
-/* 3D Floating Motion Keyframes */
-@keyframes orbFloat3D_1 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(70px, 60px, 40px) scale(1.12) rotate(4deg); }
-  100% { transform: translate3d(-30px, 90px, -20px) scale(0.94) rotate(-3deg); }
-}
-
-@keyframes orbFloat3D_2 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(-75px, 70px, -30px) scale(1.08) rotate(-5deg); }
-  100% { transform: translate3d(-40px, -40px, 35px) scale(1.02) rotate(3deg); }
-}
-
-@keyframes orbFloat3D_3 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(80px, -60px, 50px) scale(1.15) rotate(6deg); }
-  100% { transform: translate3d(40px, 60px, -30px) scale(0.92) rotate(-4deg); }
-}
-
-@keyframes orbFloat3D_4 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(-60px, 80px, -40px) scale(0.95) rotate(-4deg); }
-  100% { transform: translate3d(-90px, -50px, 30px) scale(1.1) rotate(5deg); }
-}
-
-@keyframes orbFloat3D_5 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(60px, -70px, -30px) scale(1.1) rotate(3deg); }
-  100% { transform: translate3d(-50px, -40px, 45px) scale(0.96) rotate(-3deg); }
-}
-
-@keyframes orbFloat3D_6 {
-  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate3d(-70px, -60px, 40px) scale(1.12) rotate(-6deg); }
-  100% { transform: translate3d(40px, -80px, -25px) scale(0.94) rotate(4deg); }
-}
-
-[data-theme="light"] .mesh-blob {
-  mix-blend-mode: multiply;
-  filter: blur(65px);
-}
-
-[data-theme="light"] .orb-yellow-1,
-[data-theme="light"] .orb-yellow-2 {
-  background: radial-gradient(circle, rgba(234, 179, 8, 0.18) 0%, transparent 70%);
-}
-
-[data-theme="light"] .orb-green-1,
-[data-theme="light"] .orb-green-2 {
-  background: radial-gradient(circle, rgba(22, 163, 74, 0.16) 0%, transparent 70%);
-}
-
-[data-theme="light"] .orb-red-1,
-[data-theme="light"] .orb-red-2 {
-  background: radial-gradient(circle, rgba(220, 38, 38, 0.16) 0%, transparent 70%);
+  display: none !important;
 }
 
 ::selection {
@@ -307,6 +171,10 @@ button {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  contain: layout style;
   transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
@@ -1984,51 +1852,7 @@ button {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Lightbox Modal */
-.sheet-lightbox-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.92);
-  backdrop-filter: blur(10px);
-  z-index: 300;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
 
-.sheet-lightbox-modal.open {
-  display: flex;
-}
-
-.lightbox-close-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.lightbox-img-wrapper {
-  max-width: 95vw;
-  max-height: 90vh;
-  overflow: auto;
-}
-
-.lightbox-img-wrapper img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-}
 
 /* Loading & Error States */
 .result-state-container {
@@ -2106,6 +1930,9 @@ button {
   box-shadow: var(--shadow-lg);
   margin: 16px auto 20px;
   max-width: 620px;
+  contain: paint;
+  isolation: isolate;
+  transform: translate3d(0, 0, 0);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -2162,13 +1989,26 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: grab;
   overflow: hidden;
   min-height: 480px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  contain: paint;
 }
 
 [data-theme="dark"] .sambad-sheet-img-wrap {
   background: #090d16;
+}
+
+.sambad-sheet-img-wrap.is-zoomed {
+  touch-action: none;
+  cursor: grab;
+}
+
+.sambad-sheet-img-wrap.is-panning {
+  cursor: grabbing;
 }
 
 .sambad-sheet-img {
@@ -2176,22 +2016,137 @@ button {
   width: 100%;
   max-width: 100%;
   height: auto;
+  aspect-ratio: 1 / 1.414;
   object-fit: contain;
-  transition: transform 0.25s ease;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  pointer-events: auto;
 }
 
-.sambad-sheet-img-wrap:hover .sambad-sheet-img {
-  transform: scale(1.015);
+.sambad-sheet-img.animate-zoom {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sambad-sheet-img-wrap:not(.is-zoomed):hover .sambad-sheet-img {
+    transform: scale(1.015);
+  }
+}
+
+/* Floating Interactive Zoom Toolbar */
+.sheet-zoom-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 4px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sheet-zoom-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 0;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  transition: background 0.15s ease, transform 0.15s ease;
+  padding: 0;
+}
+
+.sheet-zoom-btn:hover {
+  background: rgba(37, 99, 235, 0.9);
+  transform: scale(1.08);
+}
+
+.sheet-zoom-btn:active {
+  transform: scale(0.92);
+}
+
+/* Dynamic Zoom Status Pill */
+.sheet-zoom-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sheet-zoom-indicator.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.zoom-level-text {
+  color: #60a5fa;
+  font-weight: 800;
+}
+
+.zoom-pan-hint {
+  color: #94a3b8;
+  font-size: 0.7rem;
+}
+
+.zoom-quick-reset {
+  background: #ef4444;
+  color: #ffffff;
+  border: 0;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+  margin-left: 2px;
+  transition: background 0.15s ease;
+}
+
+.zoom-quick-reset:hover {
+  background: #dc2626;
 }
 
 .scanned-sheet-zoom-overlay {
   position: absolute;
   bottom: 12px;
   right: 12px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(15, 23, 42, 0.88);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #ffffff;
-  padding: 6px 12px;
+  padding: 6px 13px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
@@ -2199,9 +2154,15 @@ button {
   font-size: 0.78rem;
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  pointer-events: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
   transition: opacity 0.2s ease;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.sambad-sheet-img-wrap.is-zoomed .scanned-sheet-zoom-overlay {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Sambad.tv Official HTML Iframe Embed Wrapper */
@@ -2291,15 +2252,20 @@ button {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(3, 7, 18, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   display: none;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 16px;
+  justify-content: space-between;
+  padding: 12px 16px;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.22s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  overflow: hidden;
 }
 
 .sheet-lightbox-modal.active,
@@ -2308,44 +2274,124 @@ button {
   opacity: 1;
 }
 
-.lightbox-close-btn {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 44px;
-  height: 44px;
+.lightbox-header-bar {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px;
+  z-index: 10;
+  gap: 12px;
+}
+
+.lightbox-title-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.10);
+  color: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.lightbox-actions-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lightbox-action-btn {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.lightbox-action-btn:hover {
+  background: rgba(37, 99, 235, 0.85);
+  border-color: rgba(37, 99, 235, 1);
+  transform: scale(1.06);
+}
+
+.lightbox-close-btn {
+  position: static;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff;
+  border: 1px solid rgba(239, 68, 68, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition-fast);
-  z-index: 10;
+  padding: 0;
 }
 
 .lightbox-close-btn:hover {
-  background: rgba(239, 68, 68, 0.8);
+  background: rgba(239, 68, 68, 0.9);
   transform: rotate(90deg);
 }
 
 .lightbox-img-wrapper {
-  max-width: 92vw;
-  max-height: 90vh;
+  flex: 1;
+  width: 100%;
+  max-width: 96vw;
+  max-height: 84vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  cursor: grab;
+}
+
+.lightbox-img-wrapper.is-panning {
+  cursor: grabbing;
 }
 
 .lightbox-img-wrapper img {
   max-width: 100%;
-  max-height: 88vh;
+  max-height: 82vh;
   object-fit: contain;
   border-radius: 8px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75);
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+}
+
+.lightbox-img-wrapper img.animate-zoom {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+.lightbox-footer-hint {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  padding: 5px 14px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  margin-top: 6px;
+  pointer-events: none;
+  text-align: center;
 }
 
 /* Yesterday's Results Archive Section */
@@ -2430,7 +2476,9 @@ button {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  transition: transform var(--transition-fast);
+  contain: paint;
+  isolation: isolate;
+  transform: translate3d(0, 0, 0);
 }
 
 .yesterday-sheet-card.hidden {
